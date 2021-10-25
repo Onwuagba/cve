@@ -78,6 +78,42 @@ def addOwner(request):
             messages.error(request, 'Unauthorised access')
     return render(request, "user/add-home-owner.html")
 
+@login_required
+def addProp(request):
+    user1 = request.user
+    # print (User.objects.get(id=user1.user_role))
+    if request.method == 'POST':
+        try:
+            user = User.objects.get(id=user1.id)
+            first_name = request.POST.get('firstname')
+            last_name = request.POST.get('lastname')
+            email = request.POST.get('email')
+            phonenumber = request.POST.get('phoneNumber')
+            pass1 = request.POST.get('password')
+            img = request.POST.get('image')
+            if User.objects.filter(email=email).exists():
+                messages.info(request, 'Email already exists.')
+            elif User.objects.filter(phone_number=phonenumber).exists():
+                messages.info(request, 'Phone number already exists.')
+            else:
+                user = User(email=email)
+                user.first_name = first_name
+                user.last_name = last_name
+                user.phone_number = phonenumber
+                user.default_pwd = True
+                user.profile_photo = img
+                user.set_password(pass1)
+                # print(user)
+                user.save()
+                context = {
+                    'passa':pass1,
+                }
+                # messages.success(request, "User successfully added")
+                return render(request, "user/add-property.html", context)
+        except ObjectDoesNotExist:
+            messages.error(request, 'Unauthorised access')
+    return render(request, "user/add-property.html")
+
 # list all property
 @login_required
 def allProp(request):
