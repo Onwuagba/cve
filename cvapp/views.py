@@ -65,6 +65,7 @@ def addOwner(request):
                 user.last_name = last_name
                 user.phone_number = phonenumber
                 user.default_pwd = True
+                user.is_active = True
                 user.profile_photo = img
                 user.set_password(pass1)
                 # print(user)
