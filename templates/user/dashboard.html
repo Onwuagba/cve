@@ -7,7 +7,7 @@
       <div class="main-content">
         <section class="section">
           <div class="section-header">
-            <h1>Welcome, {{ request.user.first_name }}</h1>
+            <h1>Welcome, {{ request.user.first_name | capfirst }}</h1>
           </div>
           <div class="row">
             <div class="col-lg-4 col-md-6 col-sm-6 col-12">
@@ -100,7 +100,7 @@
                         <td><a href="#">CVE-87239</a></td>
                         <td class="font-weight-600">Chevron Drive</td>
                         <td><a href="#">Emmanuel</a></td>
-                        <td>&#8358 16M</td>
+                        <td>&#835816M</td>
                         <td>01-10-2018</td>
                         <td><div class="badge badge-warning">Not Sold</div></td>
                       </tr>
@@ -108,7 +108,7 @@
                         <td><a href="#">CVE-82139</a></td>
                         <td class="font-weight-600">VGG</td>
                         <td><a href="#">Emmanuel</a></td>
-                        <td>&#8358 16M</td>
+                        <td>&#8358100M</td>
                         <td>01-10-2021</td>
                         <td><div class="badge badge-primary">Sold</div></td>
                       </tr>
