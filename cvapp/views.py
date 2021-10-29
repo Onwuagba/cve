@@ -17,6 +17,15 @@ def home(request):
 def staffHome(request):
     return render(request, "cv_staff/staff_home.html")
 
+def userDash(request):
+    return render(request, "cve_user/user_dash.html")
+
+def userProp(request):
+    return render(request, "cve_user/user_properties.html")
+
+def payDetails(request):
+    return render(request, "cve_user/payment_details.html")
+
 def forgotPass(request):
     return render(request, "auth/auth-forgot.html")
 
@@ -125,9 +134,9 @@ def allProp(request):
 def allOwner(request):
     return render(request, "user/all-owners.html")
 
-@login_required
-def addProp(request):
-    return render(request, "user/add-property.html")
+# @login_required
+# def addProp(request):
+#     return render(request, "user/add-property.html")
 
 # @login_required
 # def addOwner(request):
