@@ -17,6 +17,7 @@ def home(request):
 def staffHome(request):
     return render(request, "cv_staff/staff_home.html")
 
+@login_required
 def userDash(request):
     return render(request, "cve_user/user_dash.html")
 
@@ -24,7 +25,10 @@ def userProp(request):
     return render(request, "cve_user/user_properties.html")
 
 def payDetails(request):
-    return render(request, "cve_user/payment_details.html")
+    context = {
+        'active': "active",
+    }
+    return render(request, "cve_user/payment_details.html", context)
 
 def forgotPass(request):
     return render(request, "auth/auth-forgot.html")
@@ -42,11 +46,11 @@ def login(request):
             # return redirect("cvapp:home")
             if user.user_role == 'S':
                 # print ("This is a staff")
-                return redirect("cvapp:staffHome")
+                return redirect("cvapp:home")
             else:
                 # print (user.user_role)
                 # print ("This is a user")
-                return redirect("cvapp:home")
+                return redirect("cvapp:userDash")
         else:
             messages.success(request, "Incorrect credentials. Please check them and try again")
     return render(request, "auth/auth-login.html")
@@ -75,6 +79,7 @@ def addOwner(request):
                 user.phone_number = phonenumber
                 user.default_pwd = True
                 user.is_active = True
+                user.user_role = "H"
                 user.profile_photo = img
                 user.set_password(pass1)
                 # print(user)
