@@ -11,22 +11,31 @@ from django.shortcuts import get_object_or_404
 
 @login_required
 def home(request):
-    return render(request, "user/dashboard.html")
+    context = {
+        'page': 'home',
+    }
+    return render(request, "user/dashboard.html", context)
 
-@login_required
-def staffHome(request):
-    return render(request, "cv_staff/staff_home.html")
+# @login_required
+# def staffHome(request):
+#     return render(request, "cv_staff/staff_home.html")
 
 @login_required
 def userDash(request):
-    return render(request, "cve_user/user_dash.html")
+    context = {
+        'page': 'dash',
+    }
+    return render(request, "cve_user/user_dash.html", context)
 
 def userProp(request):
-    return render(request, "cve_user/user_properties.html")
+    context = {
+        'page': 'prop',
+    }
+    return render(request, "cve_user/user_properties.html", context)
 
 def payDetails(request):
     context = {
-        'active': "active",
+        'page': 'payD',
     }
     return render(request, "cve_user/payment_details.html", context)
 
@@ -54,6 +63,9 @@ def login(request):
         else:
             messages.success(request, "Incorrect credentials. Please check them and try again")
     return render(request, "auth/auth-login.html")
+
+def resetPass(request):
+    return render(request, "auth/auth-reset-pass.html")
 
 @login_required
 def addOwner(request):
@@ -86,12 +98,14 @@ def addOwner(request):
                 user.save()
                 context = {
                     'passa':pass1,
+                    'page':'addowner'
                 }
                 # messages.success(request, "User successfully added")
                 return render(request, "user/add-home-owner.html", context)
         except ObjectDoesNotExist:
             messages.error(request, 'Unauthorised access')
-    return render(request, "user/add-home-owner.html")
+    context = {'page':'addowner'}
+    return render(request, "user/add-home-owner.html", context)
 
 @login_required
 def addProp(request):
@@ -122,22 +136,31 @@ def addProp(request):
                 user.save()
                 context = {
                     'passa':pass1,
+                    'page':'addprop'
                 }
                 # messages.success(request, "User successfully added")
                 return render(request, "user/add-property.html", context)
         except ObjectDoesNotExist:
             messages.error(request, 'Unauthorised access')
-    return render(request, "user/add-property.html")
+    
+    context = {'page':'addprop'}
+    return render(request, "user/add-property.html", context)
 
 # list all property
 @login_required
 def allProp(request):
-    return render(request, "user/all-property.html")
+    context = {
+        'page': 'allprop',
+    }
+    return render(request, "user/all-property.html", context)
 
 # list all owners
 @login_required
 def allOwner(request):
-    return render(request, "user/all-owners.html")
+    context = {
+        'page': 'allowner',
+    }
+    return render(request, "user/all-owners.html", context)
 
 # @login_required
 # def addProp(request):
