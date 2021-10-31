@@ -1,14 +1,17 @@
 from django.urls import path
-from .views import home, login, forgotPass, allProp, allOwner, addProp, addOwner, logout, userDash, userProp, payDetails
+from .views import home, login, forgotPass, allProp, allOwner, addProp, addOwner, logout, userDash, userProp, payDetails, resetPass
 
 app_name = 'cvapp'
 
 urlpatterns = [
-    #staff URLs
-    path("", home, name='home'),
+    #auth URL
     path("login/", login, name='login'),
     path("logout/", logout, name='logout'),
     path("forgot_password/", forgotPass, name='fPass'),
+    path("reset_password/", resetPass, name='rePass'),
+
+    #staff URLs
+    path("", home, name='home'),
     path("property/", allProp, name='aProp'),
     path("add-property/", addProp, name='addProp'),
     path("add-client/", addOwner, name='addOwner'),

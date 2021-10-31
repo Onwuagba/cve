@@ -163,6 +163,8 @@
             <div class="dropdown-menu dropdown-menu-right">
               <a href="#" class="dropdown-item has-icon">
                 <i class="far fa-user"></i> Profile
+              </a><a href="#" class="dropdown-item has-icon">
+                <i class="fas fa-wallet"></i> New Payment
               </a>
               <!-- <a href="#" class="dropdown-item has-icon">
                 <i class="fas fa-bolt"></i> Activities
@@ -191,15 +193,15 @@
           </div>
           <ul class="sidebar-menu" style="margin-top: 20px">
               <li class="menu-header">Your Dashboard</li>
-              <li class="nav-item active">
+              <li class="nav-item {% if page == 'dash' %}active{% endif %}">
                 <a href="{% url 'cvapp:userDash' %}" class="nav-link"><i class="fas fa-laptop"></i><span>Dashboard</span></a>
               </li>
               <li class="menu-header"></li>
-              <li class="nav-item">
+              <li class="nav-item {% if page == 'prop' %}active{% endif %}">
                 <a href="{% url 'cvapp:userProp' %}" class="nav-link"><i class="fas fa-city"></i> <span>My Properties</span></a>
               </li>
               <li class="menu-header"></li>
-              <li class="nav-item">
+              <li class="nav-item {% if page == 'payD' %}active{% endif %}">
                 <a href="{% url 'cvapp:payDetails' %}" class="nav-link"><i class="fas fa-users-cog"></i> <span>Manage Payments</span></a>
               </li>
             </ul>
