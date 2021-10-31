@@ -47,7 +47,7 @@ class User(AbstractUser):
     is_staff = models.BooleanField(default=False) 
     is_admin = models.BooleanField(default=False)
     regToken = models.UUIDField(default=uuid.uuid4, editable=False, unique=True, verbose_name='token') ##for new registrations
-    profile_photo = models.ImageField(upload_to='img/profilePhoto/', verbose_name="profile photo", blank=True, null=True, unique=True)
+    # profile_photo = models.ImageField(upload_to='img/profilePhoto/', verbose_name="profile photo", blank=True, null=True, unique=True)
     USER_ROLE = [
         ('S', 'Staff'), 
         ('H', 'Home Owner'),
