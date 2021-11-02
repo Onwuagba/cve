@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import home, login, forgotPass, allProp, allOwner, addProp, addOwner, logout, userDash, userProp, payDetails, resetPass
+from .views import home, login, forgotPass, allProp, allOwner, addProp, addOwner, logout, userProp, payDetails, resetPass
 
 app_name = 'cvapp'
 
@@ -18,7 +18,7 @@ urlpatterns = [
     path("home-owners/", allOwner, name='aOwner'),
 
     # user URLS
-    path("dashboard/", userDash, name='userDash'),
+    # path("dashboard/", userDash, name='userDash'),
     path("properties/", userProp, name='userProp'),
     path("payments/", payDetails, name='payDetails'),
 ]

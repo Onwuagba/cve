@@ -43,7 +43,7 @@ class User(AbstractUser):
     phone_regex = RegexValidator(regex=r'^(\+\d{1,3}[- ]?)?\d{10}$', message="Phone number not validated.")
     phone_number = models.CharField(validators=[phone_regex], max_length=17, unique=True) 
     default_pwd = models.BooleanField(default=True) #checks that the newly created user does not have the first password set
-    is_active = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False) 
     is_admin = models.BooleanField(default=False)
     regToken = models.UUIDField(default=uuid.uuid4, editable=False, unique=True, verbose_name='token') ##for new registrations
