@@ -183,18 +183,18 @@
       <div class="main-sidebar">
         <aside id="sidebar-wrapper">
           <div class="sidebar-brand">
-            <a href="{% url 'cvapp:userDash' %}">
+            <a href="{% url 'cvapp:home' %}">
               <img src="{% static '/img/CVE_logoo.png' %}" alt="logo" class="mb-5 mt-2" width="200">
             </a>
           </div>
           <div class="sidebar-brand sidebar-brand-sm">
-            <a href="{% url 'cvapp:userDash' %}"><img src="{% static '/img/CVE_logo.png' %}" alt="logo" width="45" height="45">
+            <a href="{% url 'cvapp:home' %}"><img src="{% static '/img/CVE_logo.png' %}" alt="logo" width="45" height="45">
             </a>
           </div>
           <ul class="sidebar-menu" style="margin-top: 20px">
               <li class="menu-header">Your Dashboard</li>
-              <li class="nav-item {% if page == 'dash' %}active{% endif %}">
-                <a href="{% url 'cvapp:userDash' %}" class="nav-link"><i class="fas fa-laptop"></i><span>Dashboard</span></a>
+              <li class="nav-item {% if page == 'home' %}active{% endif %}">
+                <a href="{% url 'cvapp:home' %}" class="nav-link"><i class="fas fa-laptop"></i><span>Dashboard</span></a>
               </li>
               <li class="menu-header"></li>
               <li class="nav-item {% if page == 'prop' %}active{% endif %}">

@@ -14,18 +14,25 @@ def home(request):
     context = {
         'page': 'home',
     }
-    return render(request, "user/dashboard.html", context)
+    if request.user.user_role == 'H':
+        # print ("This is a staff")
+        return render(request, "user/dashboard.html", context)
+    else:
+        # print (user.user_role)
+        # print ("This is a user")
+        return render(request, "cve_user/user_dash.html", context)
+        # return redirect("cvapp:userDash")
+    # return render(request, "user/dashboard.html", context)
 
 # @login_required
 # def staffHome(request):
 #     return render(request, "cv_staff/staff_home.html")
 
-@login_required
-def userDash(request):
-    context = {
-        'page': 'dash',
-    }
-    return render(request, "cve_user/user_dash.html", context)
+# def userDash(request):
+#     context = {
+#         'page': 'dash',
+#     }
+#     return render(request, "cve_user/user_dash.html", context)
 
 def userProp(request):
     context = {
@@ -43,7 +50,9 @@ def forgotPass(request):
     return render(request, "auth/auth-forgot.html")
 
 def login(request):
-    if request.method == "POST":
+    if request.user.is_authenticated:
+        return redirect("cvapp:home")
+    elif request.method == "POST":
         email = request.POST.get("email")
         password = request.POST.get("password")
         # user = User().objects.filter(email=email).filter(password=password)
@@ -52,14 +61,7 @@ def login(request):
         user = auth.authenticate(email=email, password=password)
         if user:
             auth.login(request, user)
-            # return redirect("cvapp:home")
-            if user.user_role == 'S':
-                # print ("This is a staff")
-                return redirect("cvapp:home")
-            else:
-                # print (user.user_role)
-                # print ("This is a user")
-                return redirect("cvapp:userDash")
+            return redirect("cvapp:home")
         else:
             messages.success(request, "Incorrect credentials. Please check them and try again")
     return render(request, "auth/auth-login.html")
@@ -90,7 +92,7 @@ def addOwner(request):
                 user.last_name = last_name
                 user.phone_number = phonenumber
                 user.default_pwd = True
-                user.is_active = True
+                # user.is_active = True
                 user.user_role = "H"
                 user.profile_photo = img
                 user.set_password(pass1)

@@ -6,11 +6,25 @@
       <!-- Main Content -->
       <div class="main-content">
         <section class="section">
-          <!-- <div class="section-header">
-            <h1>Welcome, {{ request.user.first_name | capfirst }}</h1>
-          </div> -->
+          {% if request.user.default_pwd == True %}
+            <div class="col-12 mb-4" style="margin-top: 50px;">
+              <div class="hero text-white hero-bg-image hero-bg-parallax" data-background="{% static '/img/login-bg1.jpg' %}">
+                <div class="hero-inner">
+                  <h2>Welcome, {{ request.user.first_name | capfirst }}!</h2>
+                  <p class="lead">Your password is still set as default. Please update to continue using this dashboard.</p>
+                  <div class="mt-4">
+                    <a href="{% url 'cvapp:rePass' %}" class="btn btn-cve btn-lg btn-icon icon-left"><i class="fas fa-user-lock"></i> Change Password</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          {% else %}
+            <div class="section-header">
+              <h1>Welcome, {{ request.user.first_name | capfirst }}</h1>
+            </div>
+          {% endif %}
           
-          <div class="col-12 mb-4" style="margin-top: 50px;">
+          <!-- <div class="col-12 mb-4" style="margin-top: 50px;">
             <div class="hero text-white hero-bg-image hero-bg-parallax" data-background="{% static '/img/login-bg1.jpg' %}">
               <div class="hero-inner">
                 <h2>Welcome, {{ request.user.first_name | capfirst }}!</h2>
@@ -20,7 +34,7 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
           <div class="row">
             <div class="col-lg-4 col-md-6 col-sm-6 col-12">
               <div class="card card-statistic-1">
@@ -85,27 +99,27 @@
                       <tr>
                         <th>Payment ID</th>
                         <th>Property ID</th>
-                        <th>Amount</th>
+                        <th>Amount Paid</th>
                         <th>Date</th>
                         <th>Remainder</th>
                       </tr>
                       <tr>
                         <td>INV-87239</td>
-                        <td class="font-weight-600"><a href="#">Kusnadi</a></td>
+                        <td class="font-weight-600"><a href="#">CVE-001</a></td>
                         <td>&#8358;12.5M</td>
                         <td>July 19, 2018</td>
                         <td>&#8358;12.5M</td>
                       </tr>
                       <tr>
                         <td>INV-48574</td>
-                        <td class="font-weight-600"><a href="#">Hasan Basri</a></td>
+                        <td class="font-weight-600"><a href="#">CVE-002</a></td>
                         <td>&#8358;12.5M</td>
                         <td>July 21, 2018</td>
                         <td>&#8358;12.5M</td>
                       </tr>
                       <tr>
                         <td>INV-76824</td>
-                        <td class="font-weight-600"><a href="#">Muhamad Nuruzzaki</a></td>
+                        <td class="font-weight-600"><a href="#">CVE-003</a></td>
                         <td>&#8358;110.5M</td>
                         <td>July 22, 2018</td>
                         <td>&#8358;12.5M
@@ -113,7 +127,7 @@
                       </tr>
                       <tr>
                         <td>INV-84990</td>
-                        <td class="font-weight-600"><a href="#">Agung Ardiansyah</a></td>
+                        <td class="font-weight-600"><a href="#">CVE-004</a></td>
                         <td>&#8358;195M</td>
                         <td>July 22, 2018</td>
                         <td>&#8358;12.5M
@@ -121,7 +135,7 @@
                       </tr>
                       <tr>
                         <td>INV-87320</td>
-                        <td class="font-weight-600"><a href="#">Ardian Rahardiansyah</a></td>
+                        <td class="font-weight-600"><a href="#">CVE-005</a></td>
                         <td>&#8358;32.5M</td>
                         <td>July 28, 2018</td>
                         <td>&#8358;12.5M
