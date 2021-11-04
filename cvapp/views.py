@@ -63,7 +63,11 @@ def login(request):
             auth.login(request, user)
             return redirect("cvapp:home")
         else:
+            context = {
+                'email':email,
+            }
             messages.error(request, "Incorrect credentials. Please check them and try again")
+            return render(request, "auth/auth-login.html", context)
     return render(request, "auth/auth-login.html")
 
 def resetPass(request):
