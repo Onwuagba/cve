@@ -12,7 +12,7 @@ from django.shortcuts import get_object_or_404
 @login_required
 def home(request):
     context = {
-        'page': 'home',
+        'page': 'Dashboard',
     }
     if request.user.user_role == 'H':
         # print ("This is a staff")
@@ -36,13 +36,13 @@ def home(request):
 
 def userProp(request):
     context = {
-        'page': 'prop',
+        'page': 'Properties',
     }
     return render(request, "cve_user/user_properties.html", context)
 
 def payDetails(request):
     context = {
-        'page': 'payD',
+        'page': 'Payment History',
     }
     return render(request, "cve_user/payment_details.html", context)
 
@@ -63,7 +63,7 @@ def login(request):
             auth.login(request, user)
             return redirect("cvapp:home")
         else:
-            messages.success(request, "Incorrect credentials. Please check them and try again")
+            messages.error(request, "Incorrect credentials. Please check them and try again")
     return render(request, "auth/auth-login.html")
 
 def resetPass(request):
@@ -79,34 +79,43 @@ def addOwner(request):
             first_name = request.POST.get('firstname')
             last_name = request.POST.get('lastname')
             email = request.POST.get('email')
-            phonenumber = request.POST.get('phoneNumber')
+            phone_number = request.POST.get('phoneNumber')
             pass1 = request.POST.get('password')
-            img = request.POST.get('image')
+            # img = request.POST.get('image')
+            context = {
+                'passa':pass1,
+                'first_name':first_name,
+                'last_name':last_name,
+                'email':email,
+                'phone_number':phone_number,
+                # 'img':img,
+                'page':'Add Owner'
+            }
             if User.objects.filter(email=email).exists():
-                messages.info(request, 'Email already exists.')
-            elif User.objects.filter(phone_number=phonenumber).exists():
-                messages.info(request, 'Phone number already exists.')
+                messages.error(request, 'Email already exists.')
+                return render(request, "user/add-home-owner.html", context)
+            elif User.objects.filter(phone_number=phone_number).exists():
+                messages.error(request, 'Phone number already exists.')
+                return render(request, "user/add-home-owner.html", context)
             else:
                 user = User(email=email)
                 user.first_name = first_name
                 user.last_name = last_name
-                user.phone_number = phonenumber
+                user.phone_number = phone_number
                 user.default_pwd = True
-                # user.is_active = True
                 user.user_role = "H"
-                user.profile_photo = img
+                # user.profile_photo = img
                 user.set_password(pass1)
                 # print(user)
                 user.save()
-                context = {
+                success_note = {
                     'passa':pass1,
-                    'page':'addowner'
+                    'page':'Add Owner'
                 }
-                # messages.success(request, "User successfully added")
-                return render(request, "user/add-home-owner.html", context)
+                return render(request, "user/add-home-owner.html", success_note)
         except ObjectDoesNotExist:
             messages.error(request, 'Unauthorised access')
-    context = {'page':'addowner'}
+    context = {'page':'Add Owner'}
     return render(request, "user/add-home-owner.html", context)
 
 @login_required
@@ -138,21 +147,21 @@ def addProp(request):
                 user.save()
                 context = {
                     'passa':pass1,
-                    'page':'addprop'
+                    'page':'Add Property'
                 }
                 # messages.success(request, "User successfully added")
                 return render(request, "user/add-property.html", context)
         except ObjectDoesNotExist:
             messages.error(request, 'Unauthorised access')
     
-    context = {'page':'addprop'}
+    context = {'page':'Add Property'}
     return render(request, "user/add-property.html", context)
 
 # list all property
 @login_required
 def allProp(request):
     context = {
-        'page': 'allprop',
+        'page': 'Properties',
     }
     return render(request, "user/all-property.html", context)
 
@@ -160,7 +169,7 @@ def allProp(request):
 @login_required
 def allOwner(request):
     context = {
-        'page': 'allowner',
+        'page': 'Home Owners',
     }
     return render(request, "user/all-owners.html", context)
 

@@ -73,6 +73,10 @@ class HouseInfo(models.Model):
     date_updated = models.DateTimeField(auto_now=True)
     deleted = models.BooleanField(default=False)
 
+    readonly_fields = [
+        'date_updated', 'date_created'
+    ]
+
     def __str__(self):
         return f"{self.house_id}"
 
@@ -82,8 +86,12 @@ class UserHouse(models.Model):
     home_id = models.ForeignKey(HouseInfo, related_name='house_info', on_delete=models.CASCADE)
     created_by = models.ForeignKey(User, related_name='staff_approver', on_delete=models.CASCADE)
     date_created = models.DateTimeField(auto_now_add=True)
-    dateUpdated = models.DateTimeField(auto_now=True)
+    date_updated = models.DateTimeField(auto_now=True)
     deleted = models.BooleanField(default=False)
+
+    readonly_fields = [
+        'date_updated', 'date_created'
+    ]
 
     class Meta:
         constraints = [
@@ -103,9 +111,13 @@ class Payment(models.Model):
     ]
     payment_status = models.CharField(max_length=2, choices=STATUS, default='P')
     approved_by = models.ForeignKey(User, related_name='approver', on_delete=models.CASCADE)
-    date_paid = models.DateTimeField(auto_now_add=True)
-    dateUpdated = models.DateTimeField(auto_now=True)
+    date_paid = models.DateField()
+    date_updated = models.DateTimeField(auto_now=True)
     deleted = models.BooleanField(default=False)
+
+    readonly_fields = [
+        'date_updated'
+    ]
 
     def __str__(self):
         return f"{self.pay_id}"

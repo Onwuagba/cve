@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-  <title>Dashboard - CVE </title>
+  <title>{{ page }} &mdash; CVE </title>
 
   <!-- General CSS Files -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -192,21 +192,21 @@
           </div>
           <ul class="sidebar-menu" style="margin-top: 20px">
               <li class="menu-header">Dashboard</li>
-              <li class="nav-item {% if page == 'home' %}active{% endif %}">
+              <li class="nav-item {% if page == 'Dashboard' %}active{% endif %}">
                 <a href="{% url 'cvapp:home' %}" class="nav-link"><i class="fas fa-laptop"></i><span>Dashboard</span></a>
               </li>
               <li class="menu-header">The Estate</li>
-              <li class="nav-item {% if page == 'allprop' %}active{% endif %}">
+              <li class="nav-item {% if page == 'Properties' %}active{% endif %}">
                 <a href="{% url 'cvapp:aProp' %}" class="nav-link"><i class="fas fa-city"></i> <span>All Properties</span></a>
               </li>
-              <li class="nav-item {% if page == 'addprop' %}active{% endif %}">
+              <li class="nav-item {% if page == 'Add Property' %}active{% endif %}">
                 <a href="{% url 'cvapp:addProp' %}" class="nav-link"><i class="fas fa-home"></i> <span>Add New Property</span></a>
               </li>
               <li class="menu-header">Home Owners</li>
-              <li class="nav-item {% if page == 'allowner' %}active{% endif %}">
+              <li class="nav-item {% if page == 'Home Owners' %}active{% endif %}">
                 <a href="{% url 'cvapp:aOwner' %}" class="nav-link"><i class="fas fa-users-cog"></i> <span>All Owners</span></a>
               </li>
-              <li class="nav-item {% if page == 'addowner' %}active{% endif %}">
+              <li class="nav-item {% if page == 'Add Owner' %}active{% endif %}">
                 <a href="{% url 'cvapp:addOwner' %}" class="nav-link"><i class="fas fa-user-plus"></i> <span>New Owner</span></a>
               </li>
               <li class="menu-header">Manage Staff</li>
@@ -260,7 +260,7 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.nicescroll/3.7.6/jquery.nicescroll.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
-  <script src="{% static 'js/invoice.js' %}"></script>
+  <script src="{% static 'js/cve.js' %}"></script>
 
   <!-- JS Libraies -->
   <!-- <script src="../node_modules/jquery-sparkline/jquery.sparkline.min.js"></script>
@@ -274,7 +274,7 @@
   <script src="{% static 'js/custom.js' %}"></script>
 
   <!-- Page Specific JS File -->
-  <!-- <script src="{% static 'js/index.js' %}"></script> -->
+  <!-- <script src="{% static 'js/page/index.js' %}"></script> -->
   {% block page_js %} {% endblock %}
 </body>
 </html>
