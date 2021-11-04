@@ -14,7 +14,7 @@ def home(request):
     context = {
         'page': 'Dashboard',
     }
-    if request.user.user_role == 'H':
+    if request.user.user_role == 'S':
         # print ("This is a staff")
         return render(request, "user/dashboard.html", context)
     else:
