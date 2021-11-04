@@ -1,3 +1,4 @@
+import uuid
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import auth
 from django.contrib.auth.decorators import login_required
@@ -70,7 +71,39 @@ def login(request):
             return render(request, "auth/auth-login.html", context)
     return render(request, "auth/auth-login.html")
 
-def resetPass(request):
+def resetPass(request, token):
+    auth_token = get_object_or_404(User, regToken=token)
+    if request.user.is_authenticated:
+        if auth_token.id == request.user.id:
+            if request.method == "POST":
+                p1 = request.POST.get("pass1")
+                p2 = request.POST.get("pass2")
+                if p1 == p2:
+                    auth_token.set_password(p1)
+                    auth_token.default_pwd = False
+                    auth_token.regToken = uuid.uuid4()
+                    auth_token.save()
+                    messages.success(request, "Password reset successfully")
+                    return redirect("cvapp:logout")
+                else:
+                    messages.error(request, "Passwords do not match.")
+                    return render(request, "auth/auth-reset-pass.html")
+        else:
+            return redirect("cvapp:login")
+    else:
+        if request.method == "POST":
+            p1 = request.POST.get("pass1")
+            p2 = request.POST.get("pass2")
+            if p1 == p2:
+                auth_token.set_password(p1)
+                auth_token.default_pwd = False
+                auth_token.regToken = uuid.uuid4()
+                auth_token.save()
+                messages.success(request, "Password reset successfully")
+                return redirect("cvapp:logout")
+            else:
+                messages.error(request, "Your passwords do not match.")
+                return render(request, "auth/auth-reset-pass.html")
     return render(request, "auth/auth-reset-pass.html")
 
 @login_required

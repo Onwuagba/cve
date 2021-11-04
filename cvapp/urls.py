@@ -8,7 +8,8 @@ urlpatterns = [
     path("login/", login, name='login'),
     path("logout/", logout, name='logout'),
     path("forgot_password/", forgotPass, name='fPass'),
-    path("reset_password/", resetPass, name='rePass'),
+    path("reset_password/<str:token>/", resetPass, name='rePass'),
+    # path("reset_password/", resetPass, name='rePass'),
 
     #staff URLs
     path("", home, name='home'),

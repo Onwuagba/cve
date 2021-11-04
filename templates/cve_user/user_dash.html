@@ -13,7 +13,7 @@
                   <h2>Welcome, {{ request.user.first_name | capfirst }}!</h2>
                   <p class="lead">Your password is still set as default. Please update to continue using this dashboard.</p>
                   <div class="mt-4">
-                    <a href="{% url 'cvapp:rePass' %}" class="btn btn-cve btn-lg btn-icon icon-left"><i class="fas fa-user-lock"></i> Change Password</a>
+                    <a href="{% url 'cvapp:rePass' token=request.user.regToken%}" class="btn btn-cve btn-lg btn-icon icon-left"><i class="fas fa-user-lock"></i> Change Password</a>
                   </div>
                 </div>
               </div>

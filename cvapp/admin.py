@@ -6,7 +6,7 @@ from .models import HouseInfo, Payment, User, UserHouse
 
 @admin.register(User)
 class CustomerAdmin(admin.ModelAdmin):
-    list_display = ('first_name', 'last_name', 'phone_number', 'user_role')
+    list_display = ('first_name', 'last_name', 'phone_number', 'user_role', 'regToken')
 
 # class UserAdmin(admin.ModelAdmin):
 #     fields = ('first_name', 'last_name', 'phone_number', 'user_role')
