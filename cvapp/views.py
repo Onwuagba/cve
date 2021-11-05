@@ -38,6 +38,12 @@ def payDetails(request):
     }
     return render(request, "cve_user/payment_details.html", context)
 
+def newPayment(request):
+    context = {
+        'page': 'New Payment',
+    }
+    return render(request, "cve_user/new_payment.html", context)
+
 def forgotPass(request):
     return render(request, "auth/auth-forgot.html")
 
