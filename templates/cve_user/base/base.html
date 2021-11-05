@@ -201,8 +201,8 @@
                 <a href="{% url 'cvapp:userProp' %}" class="nav-link"><i class="fas fa-city"></i> <span>My Properties</span></a>
               </li>
               <!-- <li class="menu-header"></li> -->
-              <li class="nav-item ">
-                <a href="" class="nav-link"><i class="fas fa-book"></i> <span>My Documents</span></a>
+              <li class="nav-item {% if page == 'Documents' %}active{% endif %} ">
+                <a href="{% url 'cvapp:userDoc' %}" class="nav-link"><i class="fas fa-book"></i> <span>My Documents</span></a>
               </li>
               <!-- <li class="menu-header"></li> -->
               <li class="nav-item {% if page == 'Payment History' %}active{% endif %}">

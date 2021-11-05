@@ -1,0 +1,109 @@
+{% extends 'cve_user/base/base.html' %}
+
+{% block content %}
+{% load static %}
+
+      <!-- Main Content -->
+      <div class="main-content">
+        <section class="section">
+          <div class="section-header">
+            <h1>My Documents</h1>
+            <div class="section-header-breadcrumb">
+              <div class="breadcrumb-item active"><a href="{% url 'cvapp:home' %}">Dashboard</a></div>
+              <div class="breadcrumb-item">My Documents</div>
+            </div>
+          </div>
+
+          <div class="section-body">
+            <p class="section-lead">
+              The page houses all the documents you have.
+            </p>
+
+            <div class="row">
+              <div class="col-12 col-sm-4 col-lg-4">
+                <div class="card card-primary">
+                  <div class="card-header">
+                    <h4>Deed of Assignment</h4>
+                    <div class="card-header-action">
+                    </div>
+                  </div>
+                  <div class="card-body">
+                    <div class="chocolat-parent">
+                      <a href="{% static '/img/login-bg1.jpg' %}">
+                        <div data-crop-image="">
+                          <img alt="Deed of Assignment" src="{% static '/img/login-bg1.jpg' %}" class="img-fluid">
+                        </div>
+                      </a>
+                    </div>
+                    <div class="mt-2 mb-2 text-muted"><b>Date of issue: <br></b>12 October 2021 </div>
+                    <div class="mt-4 mb-0 text-muted">
+                    </div>
+                    <div class="mt-2 mb-2 text-muted"><b>Property type: <br></b>2 bedroom duplex</div>
+                  </div>
+                  <div class="card-footer bg-whitesmoke">
+                    <a href="#" class="card-link">Download document</a>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 col-sm-4 col-lg-4">
+                <div class="card card-primary">
+                  <div class="card-header">
+                    <h4>Certificate of Occupancy</h4>
+                    <div class="card-header-action">
+                    </div>
+                  </div>
+                  <div class="card-body">
+                    <div class="chocolat-parent">
+                      <a href="{% static '/img/login-bg1.jpg' %}">
+                        <div data-crop-image="">
+                          <img alt="Certificate of Occupancy" src="{% static '/img/login-bg1.jpg' %}" class="img-fluid">
+                        </div>
+                      </a>
+                    </div>
+                    <div class="mt-2 mb-2 text-muted"><b>Date of issue: <br></b>20 October 2021 </div>
+                    <div class="mt-4 mb-0 text-muted">
+                    </div>
+                    <div class="mt-2 mb-2 text-muted"><b>Property type: <br></b>2 bedroom duplex</div>
+                  </div>
+                  <div class="card-footer bg-whitesmoke">
+                    <a href="#" class="card-link">Download document</a>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 col-sm-4 col-lg-4">
+                <div class="card card-primary">
+                  <div class="card-header">
+                    <h4>Survey plan</h4>
+                    <div class="card-header-action">
+                    </div>
+                  </div>
+                  <div class="card-body">
+                    <div class="chocolat-parent">
+                      <a href="{% static '/img/login-bg1.jpg' %}">
+                        <div data-crop-image="">
+                          <img alt="Survey plan" src="{% static '/img/login-bg1.jpg' %}" class="img-fluid">
+                        </div>
+                      </a>
+                    </div>
+                    <div class="mt-2 mb-2 text-muted"><b>Date of issue: <br></b>10 October 2021 </div>
+                    <div class="mt-4 mb-0 text-muted">
+                    </div>
+                    <div class="mt-2 mb-2 text-muted"><b>Property type: <br></b>2 bedroom duplex</div>
+                  </div>
+                  <div class="card-footer bg-whitesmoke">
+                    <a href="#" class="card-link">Download document</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          
+          </div>
+        </section>
+      </div>
+{% endblock %}
+
+{% block page_js %} 
+  <!-- Page Specific JS File -->
+  <script src="{% static 'js/page/index.js' %}"></script>
+{% endblock %}

@@ -1,12 +1,12 @@
 import uuid
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import auth
 from django.contrib.auth.decorators import login_required
 # from django.contrib.auth import get_user_model as User
 from .models import User
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
-from django.shortcuts import get_object_or_404
+from django.contrib.auth.hashers import check_password
 
 # Create your views here.
 
@@ -16,30 +16,21 @@ def home(request):
         'page': 'Dashboard',
     }
     if request.user.user_role == 'S':
-        # print ("This is a staff")
         return render(request, "user/dashboard.html", context)
     else:
-        # print (user.user_role)
-        # print ("This is a user")
         return render(request, "cve_user/user_dash.html", context)
-        # return redirect("cvapp:userDash")
-    # return render(request, "user/dashboard.html", context)
-
-# @login_required
-# def staffHome(request):
-#     return render(request, "cv_staff/staff_home.html")
-
-# def userDash(request):
-#     context = {
-#         'page': 'dash',
-#     }
-#     return render(request, "cve_user/user_dash.html", context)
 
 def userProp(request):
     context = {
         'page': 'Properties',
     }
     return render(request, "cve_user/user_properties.html", context)
+
+def userDoc(request):
+    context = {
+        'page': 'Documents',
+    }
+    return render(request, "cve_user/user_documents.html", context)
 
 def payDetails(request):
     context = {
@@ -79,12 +70,16 @@ def resetPass(request, token):
                 p1 = request.POST.get("pass1")
                 p2 = request.POST.get("pass2")
                 if p1 == p2:
-                    auth_token.set_password(p1)
-                    auth_token.default_pwd = False
-                    auth_token.regToken = uuid.uuid4()
-                    auth_token.save()
-                    messages.success(request, "Password reset successfully")
-                    return redirect("cvapp:logout")
+                    if check_password(p1, auth_token.password):
+                    # if p1 == auth_token.password:
+                        messages.error(request, "Password same as old. Please use a new password.")
+                    else:
+                        auth_token.set_password(p1)
+                        auth_token.default_pwd = False
+                        auth_token.regToken = uuid.uuid4()
+                        auth_token.save()
+                        messages.success(request, "Password reset successfully")
+                        return redirect("cvapp:logout")
                 else:
                     messages.error(request, "Passwords do not match.")
                     return render(request, "auth/auth-reset-pass.html")
@@ -95,15 +90,17 @@ def resetPass(request, token):
             p1 = request.POST.get("pass1")
             p2 = request.POST.get("pass2")
             if p1 == p2:
-                auth_token.set_password(p1)
-                auth_token.default_pwd = False
-                auth_token.regToken = uuid.uuid4()
-                auth_token.save()
-                messages.success(request, "Password reset successfully")
-                return redirect("cvapp:logout")
+                if check_password(p1, auth_token.password):
+                    messages.error(request, "Password same as old. Please use a new password.")
+                else:
+                    auth_token.set_password(p1)
+                    auth_token.default_pwd = False
+                    auth_token.regToken = uuid.uuid4()
+                    auth_token.save()
+                    messages.success(request, "Password reset successfully")
+                    return redirect("cvapp:logout")
             else:
-                messages.error(request, "Your passwords do not match.")
-                return render(request, "auth/auth-reset-pass.html")
+                messages.error(request, "Passwords do not match.")
     return render(request, "auth/auth-reset-pass.html")
 
 @login_required
