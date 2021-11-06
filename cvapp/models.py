@@ -106,6 +106,7 @@ class Payment(models.Model):
     payment_proof = models.ImageField(upload_to='img/paymentProof/', verbose_name="proof of payment", unique=True)
     #status of payment. A staff has to manually change the status
     STATUS = [
+        ('D', 'Declined'), 
         ('P', 'Pending'), 
         ('A', 'Approved'),
     ]

@@ -202,6 +202,9 @@
               <li class="nav-item {% if page == 'Add Property' %}active{% endif %}">
                 <a href="{% url 'cvapp:addProp' %}" class="nav-link"><i class="fas fa-home"></i> <span>Add New Property</span></a>
               </li>
+              <li class="nav-item {% if page == 'Assign Property' %}active{% endif %}">
+                <a href="" class="nav-link"><i class="fas fa-map-marked-alt"></i> <span>Assign Property</span></a>
+              </li>
               <li class="menu-header">Home Owners</li>
               <li class="nav-item {% if page == 'Home Owners' %}active{% endif %}">
                 <a href="{% url 'cvapp:aOwner' %}" class="nav-link"><i class="fas fa-users-cog"></i> <span>All Owners</span></a>
@@ -214,7 +217,17 @@
                 <a href="#" class="nav-link"><i class="fas fa-users"></i> <span>All Staff</span></a>
               </li>
               <li class="nav-item">
-                <a href="#" class="nav-link"><i class="fas fa-user"></i> <span>Add Staff</span></a>
+                <a href="#" class="nav-link"><i class="fas fa-id-badge"></i> <span>Add Staff</span></a>
+              </li>
+              <li class="menu-header">Others</li>
+              <li class="nav-item">
+                <a href="#" class="nav-link"><i class="fas fa-newspaper"></i> <span>Features</span></a>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link"><i class="fas fa-plus-circle"></i> <span>Project Update</span></a>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link"><i class="fas fa-folder-plus"></i> <span>Manage Documents</span></a>
               </li>
               <!-- <li class="menu-header">Manage Products</li>
               <li class="nav-item">
