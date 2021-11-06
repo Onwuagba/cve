@@ -1,5 +1,5 @@
 from django.contrib import admin
-from django.contrib.postgres import fields
+# from django.contrib.postgres import fields
 from .models import HouseInfo, Payment, User, UserHouse
 
 # Register your models here.

@@ -67,7 +67,8 @@
                         <div class="form-group row align-items-center">
                           <label class="col-md-4 text-md-right text-left">Quantity</label>
                           <div class="col-lg-4 col-md-6">
-                            <input type="number" name="name" class="form-control" required="">
+                            <input type="number" name="name" class="form-control" required="" min="0"  oninput="this.value = 
+                            !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null">
                             <div class="invalid-feedback">
                               Please enter a name
                             </div>

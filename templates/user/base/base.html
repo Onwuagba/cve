@@ -220,11 +220,11 @@
                 <a href="#" class="nav-link"><i class="fas fa-id-badge"></i> <span>Add Staff</span></a>
               </li>
               <li class="menu-header">Others</li>
-              <li class="nav-item">
-                <a href="#" class="nav-link"><i class="fas fa-newspaper"></i> <span>Features</span></a>
+              <li class="nav-item {% if page == 'Feature' or page == 'Add Feature' %}active{% endif %}">
+                <a href="{% url 'cvapp:allFeature' %}" class="nav-link"><i class="fas fa-newspaper"></i> <span>Features</span></a>
               </li>
-              <li class="nav-item">
-                <a href="#" class="nav-link"><i class="fas fa-plus-circle"></i> <span>Project Update</span></a>
+              <li class="nav-item {% if page == 'Project Update' or page == 'Add Update' %}active{% endif %}">
+                <a href="{% url 'cvapp:allPUpdate' %}" class="nav-link"><i class="fas fa-plus-circle"></i> <span>Project Update</span></a>
               </li>
               <li class="nav-item">
                 <a href="#" class="nav-link"><i class="fas fa-folder-plus"></i> <span>Manage Documents</span></a>

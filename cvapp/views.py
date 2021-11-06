@@ -44,6 +44,30 @@ def newPayment(request):
     }
     return render(request, "cve_user/new_payment.html", context)
 
+def addFeature(request):
+    context = {
+        'page': 'Add Feature',
+    }
+    return render(request, "user/add-feature.html", context)
+
+def allFeature(request):
+    context = {
+        'page': 'Feature',
+    }
+    return render(request, "user/all-features.html", context)
+
+def addPUpdate(request):
+    context = {
+        'page': 'Add Update',
+    }
+    return render(request, "user/add-project-update.html", context)
+
+def allPUpdate(request):
+    context = {
+        'page': 'Project Update',
+    }
+    return render(request, "user/all-project-update.html", context)
+
 def forgotPass(request):
     return render(request, "auth/auth-forgot.html")
 

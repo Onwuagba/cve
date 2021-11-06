@@ -48,6 +48,7 @@ class User(AbstractUser):
     is_admin = models.BooleanField(default=False)
     regToken = models.UUIDField(default=uuid.uuid4, editable=False, unique=True, verbose_name='token') ##for new registrations
     # profile_photo = models.ImageField(upload_to='img/profilePhoto/', verbose_name="profile photo", blank=True, null=True, unique=True)
+    date_updated = models.DateTimeField(auto_now=True)
     USER_ROLE = [
         ('S', 'Staff'), 
         ('H', 'Home Owner'),
@@ -90,7 +91,7 @@ class UserHouse(models.Model):
     deleted = models.BooleanField(default=False)
 
     readonly_fields = [
-        'date_updated', 'date_created'
+        'date_updated', 'date_created', 'created_by'
     ]
 
     class Meta:
@@ -99,12 +100,11 @@ class UserHouse(models.Model):
         ]
 
 class Payment(models.Model):
-    pay_id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True, verbose_name='payment id')
+    pay_id = models.PositiveIntegerField(unique=True, verbose_name='payment id')
     user_id = models.ForeignKey(User, related_name='homePay_owner', on_delete=models.CASCADE)
     home_id = models.ForeignKey(HouseInfo, related_name='housePay_info', on_delete=models.CASCADE)
     amount_paid = models.DecimalField(max_digits=15, decimal_places=2)
     payment_proof = models.ImageField(upload_to='img/paymentProof/', verbose_name="proof of payment", unique=True)
-    #status of payment. A staff has to manually change the status
     STATUS = [
         ('D', 'Declined'), 
         ('P', 'Pending'), 
@@ -122,3 +122,58 @@ class Payment(models.Model):
 
     def __str__(self):
         return f"{self.pay_id}"
+
+
+class Feature(models.Model):
+    feature_title = models.CharField(max_length=150, null=False, blank=False, verbose_name='feature_title')
+    feature_image = models.ImageField(upload_to='img/featurePosts/', unique=True)
+    feature_link = models.URLField(max_length=200)
+    added_by = models.ForeignKey(User, related_name='staff', on_delete=models.CASCADE)
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_updated = models.DateTimeField(auto_now=True)
+    expiry_date = models.DateField()
+    deleted = models.BooleanField(default=False) #set to deleted when the feature expires
+
+    readonly_fields = [
+        'date_updated', 'date_created', 'added_by'
+    ]
+    def __str__(self):
+        return f"{self.id}"
+
+class ProjectUpdate(models.Model):
+    update_images = ArrayField(models.ImageField(upload_to='img/ProjectUpdate/', unique=True), blank=True, null=True)
+    desription = models.TextField(null=False, blank=False)
+    added_by = models.ForeignKey(User, related_name='staff_update', on_delete=models.CASCADE)
+    date_created = models.DateTimeField(auto_now_add=True)
+    update_date = models.DateField()
+
+    readonly_fields = [
+        'date_created', 'added_by'
+    ]
+    def __str__(self):
+        return f"{self.id}"
+
+
+#######
+#set this up when the documents are supplied
+#Need to know how documents will be given to home owners
+##########
+
+# class Document(models.Model):
+#     doc_name = models.CharField(max_length=150, null=False, blank=False, verbose_name='doc_name')
+#     feature_image = models.ImageField(upload_to='img/Documents/', unique=True)
+#     feature_link = models.URLField(max_length=200)
+#     added_by = models.ForeignKey(User, related_name='staff_doc', on_delete=models.CASCADE)
+#     STATUS = [
+#         ('F', 'Declined'), 
+#         ('O', 'Pending'),
+#     ]
+#     feature_status = models.CharField(max_length=2, choices=STATUS, default='P')
+#     date_created = models.DateTimeField(auto_now_add=True)
+#     date_updated = models.DateTimeField(auto_now=True)
+
+#     readonly_fields = [
+#         'date_updated', 'date_created', 'added_by'
+#     ]
+#     def __str__(self):
+#         return f"{self.id}"
