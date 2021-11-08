@@ -20,48 +20,56 @@ def home(request):
     else:
         return render(request, "cve_user/user_dash.html", context)
 
+@login_required
 def userProp(request):
     context = {
         'page': 'Properties',
     }
     return render(request, "cve_user/user_properties.html", context)
 
+@login_required
 def userDoc(request):
     context = {
         'page': 'Documents',
     }
     return render(request, "cve_user/user_documents.html", context)
 
+@login_required
 def payDetails(request):
     context = {
         'page': 'Payment History',
     }
     return render(request, "cve_user/payment_details.html", context)
 
+@login_required
 def newPayment(request):
     context = {
         'page': 'New Payment',
     }
     return render(request, "cve_user/new_payment.html", context)
 
+@login_required
 def addFeature(request):
     context = {
         'page': 'Add Feature',
     }
     return render(request, "user/add-feature.html", context)
 
+@login_required
 def allFeature(request):
     context = {
         'page': 'Feature',
     }
     return render(request, "user/all-features.html", context)
 
+@login_required
 def addPUpdate(request):
     context = {
         'page': 'Add Update',
     }
     return render(request, "user/add-project-update.html", context)
 
+@login_required
 def allPUpdate(request):
     context = {
         'page': 'Project Update',
