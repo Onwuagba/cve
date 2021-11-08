@@ -67,7 +67,7 @@ class HouseInfo(models.Model):
     street_info = models.CharField(max_length=80, unique=True)
     cost = models.DecimalField(max_digits=15, decimal_places=2)
     desription = models.TextField(null=False, blank=False)
-    images = ArrayField(models.ImageField(upload_to='img/housePhotos/', unique=True), blank=False)
+    images = ArrayField(models.ImageField(upload_to='img/housePhotos/', unique=True), blank=True)
     created_by = models.ForeignKey(User, on_delete=models.CASCADE)
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
