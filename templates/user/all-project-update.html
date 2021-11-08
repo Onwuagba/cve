@@ -1,0 +1,117 @@
+{% extends 'user/base/base.html' %}
+
+{% block content %}
+{% load static %}
+
+      <!-- Main Content -->
+      <div class="main-content">
+        <section class="section">
+          <div class="section-header">
+            <h1>Project updates</h1>
+            <div class="section-header-button">
+              <a href="{% url 'cvapp:addPUpdate' %}" class="btn btn-cve">New Update</a>
+            </div>
+            <div class="section-header-breadcrumb">
+              <div class="breadcrumb-item active"><a href="{% url 'cvapp:home' %}">Dashboard</a></div>
+              <div class="breadcrumb-item">Project updates</div>
+            </div>
+          </div>
+
+          <div class="section-body">
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="card">
+                  <div class="card-header">
+                    <h4>All Updates</h4>
+                    <div class="card-header-action">
+                      <select class="form-control selectric">
+                        <option>Selected</option>
+                        <option>Change to Sold</option>
+                        <option>Change to Not Sold</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="card-body p-0">
+                    <div class="table-responsive">
+                      <table class="table table-striped">
+                        <tr>
+                          <th>Description</th>
+                          <th>Images</th>
+                          <th>Created On</th>
+                          <th>Added By</th>
+                        </tr>
+                        <tr>
+                          <td>The Citadel Views Estate is commissioned today at Sangotedo consisting of 175 apartments with a total of 525 rooms and 350 units of car parking space, all on 33,900 square meters of land.
+                            <div class="table-links">
+                              <a href="#">Edit</a>
+                              <div class="bullet"></div>
+                              <a href="#" class="text-danger">Delete</a>
+                            </div>
+                          </td>
+                          <td>
+                            <div class="gallery">
+                              <div class="gallery-item" data-image="{% static '/img/CVE-008.webp' %}" data-title="Image 1"></div>
+                              <div class="gallery-item" data-image="{% static '/img/CVE-006.webp' %}" data-title="Image 2"></div>
+                              <div class="gallery-item" data-image="{% static '/img/CVE-004.webp' %}" data-title="Image 3"></div>
+                              <div class="gallery-item" data-image="{% static '/img/CVE-007.webp' %}" data-title="Image 4"></div>
+                              <div class="gallery-item gallery-hide" data-image="../assets/img/news/img01.webp" data-title="Image 9"></div>
+                            </div>
+                          </td>
+                          <td class="font-weight-600">10.Oct.2021</td>
+                          <td>Bola</td>
+                        </tr>
+                        <tr>
+                          <td>The Citadel Views Estate is commissioned today at Sangotedo consisting of 175 apartments with a total of 525 rooms and 350 units of car parking space, all on 33,900 square meters of land.
+                            <div class="table-links">
+                              <a href="#">Edit</a>
+                              <div class="bullet"></div>
+                              <a href="#" class="text-danger">Delete</a>
+                            </div>
+                          </td>
+                          <td>
+                            <div class="gallery">
+                              <div class="gallery-item" data-image="{% static '/img/CVE-008.webp' %}" data-title="Image 1"></div>
+                              <div class="gallery-item" data-image="{% static '/img/CVE-006.webp' %}" data-title="Image 2"></div>
+                              <div class="gallery-item" data-image="{% static '/img/CVE-004.webp' %}" data-title="Image 3"></div>
+                              <div class="gallery-item" data-image="{% static '/img/CVE-007.webp' %}" data-title="Image 4"></div>
+                              <div class="gallery-item gallery-hide" data-image="../assets/img/news/img01.webp" data-title="Image 9"></div>
+                            </div>
+                          </td>
+                          <td class="font-weight-600">10.Oct.2021</td>
+                          <td>Bola</td>
+                        </tr>
+                        <tr>
+                          <td>The Citadel Views Estate is commissioned today at Sangotedo consisting of 175 apartments with a total of 525 rooms and 350 units of car parking space, all on 33,900 square meters of land.
+                            <div class="table-links">
+                              <a href="#">Edit</a>
+                              <div class="bullet"></div>
+                              <a href="#" class="text-danger">Delete</a>
+                            </div>
+                          </td>
+                          <td>
+                            <div class="gallery">
+                              <div class="gallery-item" data-image="{% static '/img/CVE-008.webp' %}" data-title="Image 1"></div>
+                              <div class="gallery-item" data-image="{% static '/img/CVE-006.webp' %}" data-title="Image 2"></div>
+                              <div class="gallery-item" data-image="{% static '/img/CVE-004.webp' %}" data-title="Image 3"></div>
+                              <div class="gallery-item" data-image="{% static '/img/CVE-007.webp' %}" data-title="Image 4"></div>
+                              <div class="gallery-item gallery-hide" data-image="../assets/img/news/img01.webp" data-title="Image 9"></div>
+                            </div>
+                          </td>
+                          <td class="font-weight-600">10.Oct.2021</td>
+                          <td>Bola</td>
+                        </tr>
+                      </table>
+                    </div><hr>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+{% endblock %}
+
+{% block page_js %} 
+  <!-- Page Specific JS File -->
+  <script src="{% static 'js/page/index.js' %}"></script>
+{% endblock %}

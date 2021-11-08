@@ -9,7 +9,7 @@
           <div class="section-header">
             <h1>Payment History</h1>
             <div class="section-header-button">
-              <a href="#" class="btn btn-cve">New Payment</a>
+              <a href="{% url 'cvapp:newPayment' %}" class="btn btn-cve">Make Payment</a>
             </div>
             <div class="section-header-breadcrumb">
               <div class="breadcrumb-item active"><a href="{% url 'cvapp:home' %}">Dashboard</a></div>
@@ -40,6 +40,7 @@
                           <th>Amount Paid</th>
                           <th>Date</th>
                           <th>Remainder</th>
+                          <th>Status</th>
                         </tr>
                         <tr>
                           <td>INV-87239</td>
@@ -47,6 +48,7 @@
                           <td>&#8358;12.5M</td>
                           <td>July 19, 2018</td>
                           <td>&#8358;12.5M</td>
+                          <td><div class="badge badge-cve-pry">Confirmed</div></td>
                         </tr>
                         <tr>
                           <td>INV-48574</td>
@@ -54,6 +56,7 @@
                           <td>&#8358;12.5M</td>
                           <td>July 21, 2018</td>
                           <td>&#8358;12.5M</td>
+                          <td><div class="badge badge-cve-pry">Confirmed</div></td>
                         </tr>
                         <tr>
                           <td>INV-76824</td>
@@ -62,6 +65,7 @@
                           <td>July 22, 2018</td>
                           <td>&#8358;12.5M
                           </td>
+                          <td><div class="badge badge-cve">Pending</div></td>
                         </tr>
                         <tr>
                           <td>INV-84990</td>
@@ -70,6 +74,7 @@
                           <td>July 22, 2018</td>
                           <td>&#8358;12.5M
                           </td>
+                          <td><div class="badge badge-danger">Declined</div></td>
                         </tr>
                         <tr>
                           <td>INV-87320</td>
@@ -78,6 +83,7 @@
                           <td>July 28, 2018</td>
                           <td>&#8358;12.5M
                           </td>
+                          <td><div class="badge badge-cve-pry">Confirmed</div></td>
                         </tr>
                         
                       </table>
@@ -121,5 +127,5 @@
 
 {% block page_js %} 
   <!-- Page Specific JS File -->
-  <script src="{% static 'js/index.js' %}"></script>
+  <script src="{% static 'js/page/index.js' %}"></script>
 {% endblock %}

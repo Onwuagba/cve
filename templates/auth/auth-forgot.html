@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-  <title>Login &mdash; CVE</title>
+  <title>Forgot Password &mdash; CVE</title>
 
   <!-- General CSS Files -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -12,7 +12,8 @@
 
   <!-- CSS Libraries -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-social/5.1.1/bootstrap-social.min.css" integrity="sha512-f8mUMCRNrJxPBDzPJx3n+Y5TC5xp6SmStstEfgsDXZJTcxBakoB5hvPLhAfJKa9rCvH+n3xpJ2vQByxLk4WP2g==" crossorigin="anonymous" />
-
+  
+  <link rel="icon" href="{% static '/img/CVE_logo.webp' %}" sizes="32X32">
   <!-- Template CSS -->
   <link rel="stylesheet" href="{% static '/css/style.css' %}">
   <link rel="stylesheet" href="{% static '/css/components.css' %}">
@@ -24,7 +25,7 @@
       <div class="d-flex flex-wrap align-items-stretch">
         <div class="col-lg-4 col-md-6 col-12 order-lg-1 min-vh-100 order-2 bg-white">
           <div class="p-4 m-3">
-            <img src="{% static '/img/CVE_logoo.png' %}" alt="logo" class="mb-5 mt-2">
+            <img src="{% static '/img/CVE_logoo.webp' %}" alt="logo" class="mb-5 mt-2">
             <h4 class="text-dark font-weight-normal">Forgot <span class="font-weight-bold">Password</span></h4>
             <p class="text-muted">Enter your email to receive a password reset link</p>
             <form method="POST" action="#" class="needs-validation" novalidate="">

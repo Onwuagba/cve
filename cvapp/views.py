@@ -1,20 +1,26 @@
+<<<<<<< HEAD
 from django.core import exceptions
 from django.shortcuts import render, redirect
+=======
+import uuid
+from django.shortcuts import render, redirect, get_object_or_404
+>>>>>>> b64feed19b106cec5bd7199ba3c6ae47015591cc
 from django.contrib.auth.models import auth
 from django.contrib.auth.decorators import login_required
 # from django.contrib.auth import get_user_model as User
 from .models import HouseInfo, User
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
-from django.shortcuts import get_object_or_404
+from django.contrib.auth.hashers import check_password
 
 # Create your views here.
 
 @login_required
 def home(request):
     context = {
-        'page': 'home',
+        'page': 'Dashboard',
     }
+<<<<<<< HEAD
     if request.user.is_staff:
         # print ("This is a staff")
         return render(request, "user/dashboard.html", context)
@@ -34,18 +40,68 @@ def home(request):
 #         'page': 'dash',
 #     }
 #     return render(request, "cve_user/user_dash.html", context)
+=======
+    if request.user.user_role == 'S':
+        return render(request, "user/dashboard.html", context)
+    else:
+        return render(request, "cve_user/user_dash.html", context)
+>>>>>>> b64feed19b106cec5bd7199ba3c6ae47015591cc
 
+@login_required
 def userProp(request):
     context = {
-        'page': 'prop',
+        'page': 'Properties',
     }
     return render(request, "cve_user/user_properties.html", context)
 
+@login_required
+def userDoc(request):
+    context = {
+        'page': 'Documents',
+    }
+    return render(request, "cve_user/user_documents.html", context)
+
+@login_required
 def payDetails(request):
     context = {
-        'page': 'payD',
+        'page': 'Payment History',
     }
     return render(request, "cve_user/payment_details.html", context)
+
+@login_required
+def newPayment(request):
+    context = {
+        'page': 'New Payment',
+    }
+    return render(request, "cve_user/new_payment.html", context)
+
+@login_required
+def addFeature(request):
+    context = {
+        'page': 'Add Feature',
+    }
+    return render(request, "user/add-feature.html", context)
+
+@login_required
+def allFeature(request):
+    context = {
+        'page': 'Feature',
+    }
+    return render(request, "user/all-features.html", context)
+
+@login_required
+def addPUpdate(request):
+    context = {
+        'page': 'Add Update',
+    }
+    return render(request, "user/add-project-update.html", context)
+
+@login_required
+def allPUpdate(request):
+    context = {
+        'page': 'Project Update',
+    }
+    return render(request, "user/all-project-update.html", context)
 
 def forgotPass(request):
     return render(request, "auth/auth-forgot.html")
@@ -64,10 +120,52 @@ def login(request):
             auth.login(request, user)
             return redirect("cvapp:home")
         else:
-            messages.success(request, "Incorrect credentials. Please check them and try again")
+            context = {
+                'email':email,
+            }
+            messages.error(request, "Incorrect credentials. Please check them and try again")
+            return render(request, "auth/auth-login.html", context)
     return render(request, "auth/auth-login.html")
 
-def resetPass(request):
+def resetPass(request, token):
+    auth_token = get_object_or_404(User, regToken=token)
+    if request.user.is_authenticated:
+        if auth_token.id == request.user.id:
+            if request.method == "POST":
+                p1 = request.POST.get("pass1")
+                p2 = request.POST.get("pass2")
+                if p1 == p2:
+                    if check_password(p1, auth_token.password):
+                    # if p1 == auth_token.password:
+                        messages.error(request, "Password same as old. Please use a new password.")
+                    else:
+                        auth_token.set_password(p1)
+                        auth_token.default_pwd = False
+                        auth_token.regToken = uuid.uuid4()
+                        auth_token.save()
+                        messages.success(request, "Password reset successfully")
+                        return redirect("cvapp:logout")
+                else:
+                    messages.error(request, "Passwords do not match.")
+                    return render(request, "auth/auth-reset-pass.html")
+        else:
+            return redirect("cvapp:login")
+    else:
+        if request.method == "POST":
+            p1 = request.POST.get("pass1")
+            p2 = request.POST.get("pass2")
+            if p1 == p2:
+                if check_password(p1, auth_token.password):
+                    messages.error(request, "Password same as old. Please use a new password.")
+                else:
+                    auth_token.set_password(p1)
+                    auth_token.default_pwd = False
+                    auth_token.regToken = uuid.uuid4()
+                    auth_token.save()
+                    messages.success(request, "Password reset successfully")
+                    return redirect("cvapp:logout")
+            else:
+                messages.error(request, "Passwords do not match.")
     return render(request, "auth/auth-reset-pass.html")
 
 @login_required
@@ -80,34 +178,43 @@ def addOwner(request):
             first_name = request.POST.get('firstname')
             last_name = request.POST.get('lastname')
             email = request.POST.get('email')
-            phonenumber = request.POST.get('phoneNumber')
+            phone_number = request.POST.get('phoneNumber')
             pass1 = request.POST.get('password')
-            img = request.POST.get('image')
+            # img = request.POST.get('image')
+            context = {
+                'passa':pass1,
+                'first_name':first_name,
+                'last_name':last_name,
+                'email':email,
+                'phone_number':phone_number,
+                # 'img':img,
+                'page':'Add Owner'
+            }
             if User.objects.filter(email=email).exists():
-                messages.info(request, 'Email already exists.')
-            elif User.objects.filter(phone_number=phonenumber).exists():
-                messages.info(request, 'Phone number already exists.')
+                messages.error(request, 'Email already exists.')
+                return render(request, "user/add-home-owner.html", context)
+            elif User.objects.filter(phone_number=phone_number).exists():
+                messages.error(request, 'Phone number already exists.')
+                return render(request, "user/add-home-owner.html", context)
             else:
                 user = User(email=email)
                 user.first_name = first_name
                 user.last_name = last_name
-                user.phone_number = phonenumber
+                user.phone_number = phone_number
                 user.default_pwd = True
-                # user.is_active = True
                 user.user_role = "H"
-                user.profile_photo = img
+                # user.profile_photo = img
                 user.set_password(pass1)
                 # print(user)
                 user.save()
-                context = {
+                success_note = {
                     'passa':pass1,
-                    'page':'addowner'
+                    'page':'Add Owner'
                 }
-                # messages.success(request, "User successfully added")
-                return render(request, "user/add-home-owner.html", context)
+                return render(request, "user/add-home-owner.html", success_note)
         except ObjectDoesNotExist:
             messages.error(request, 'Unauthorised access')
-    context = {'page':'addowner'}
+    context = {'page':'Add Owner'}
     return render(request, "user/add-home-owner.html", context)
 
 @login_required
@@ -132,14 +239,19 @@ def addProp(request):
                 house.created_by = user
                 house.save()
                 context = {
+<<<<<<< HEAD
                     'passa': house_id,
                     'page':'addprop'
+=======
+                    'passa':pass1,
+                    'page':'Add Property'
+>>>>>>> b64feed19b106cec5bd7199ba3c6ae47015591cc
                 }
                 return render(request, "user/add-property.html", context)
         except BaseException:
             messages.error(request, 'Unauthorised access')
     
-    context = {'page':'addprop'}
+    context = {'page':'Add Property'}
     return render(request, "user/add-property.html", context)
 
 def propView(request, id):
@@ -156,8 +268,12 @@ def propView(request, id):
 def allProp(request):
     properties = HouseInfo.objects.all()
     context = {
+<<<<<<< HEAD
         'page': 'allprop',
         'properties': properties,
+=======
+        'page': 'Properties',
+>>>>>>> b64feed19b106cec5bd7199ba3c6ae47015591cc
     }
 
     return render(request, "user/all-property.html", context)
@@ -167,8 +283,12 @@ def allProp(request):
 def allOwner(request):
     owners = User.objects.filter(user_role="H")
     context = {
+<<<<<<< HEAD
         'page': 'allowner',
         'owners': owners,
+=======
+        'page': 'Home Owners',
+>>>>>>> b64feed19b106cec5bd7199ba3c6ae47015591cc
     }
     return render(request, "user/all-owners.html", context)
 
@@ -179,6 +299,7 @@ def allOwner(request):
 def logout(request):
     auth.logout(request)
     return redirect("cvapp:login")
+<<<<<<< HEAD
 
 
 
@@ -187,3 +308,5 @@ def logout(request):
 def userDash(request):
     return render(request, "cve_user/user_dash.html")
 
+=======
+>>>>>>> b64feed19b106cec5bd7199ba3c6ae47015591cc

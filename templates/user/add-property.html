@@ -59,12 +59,31 @@
                           </div>
                         </div>
                         <div class="form-group row align-items-center">
-                          <label class="col-md-4 text-md-right text-left">Location</label>
+                          <label class="col-md-4 text-md-right text-left">Name</label>
                           <div class="col-lg-4 col-md-6">
-                            <input type="text" name="location" class="form-control" required="">
+                            <input type="text" name="name" class="form-control" required="">
+                            <div class="invalid-feedback">
+                              Please enter a name
+                            </div>
                           </div>
-                          <div class="invalid-feedback">
-                            Please enter a location
+                        </div>
+                        <div class="form-group row align-items-center">
+                          <label class="col-md-4 text-md-right text-left">Title</label>
+                          <div class="col-lg-4 col-md-6">
+                            <input type="text" name="title" class="form-control" required>
+                            <div class="invalid-feedback">
+                              Please enter a title
+                            </div>
+                          </div>
+                        </div>
+                        <div class="form-group row align-items-center">
+                          <label class="col-md-4 text-md-right text-left">Quantity</label>
+                          <div class="col-lg-4 col-md-6">
+                            <input type="number" name="name" class="form-control" required="" min="0"  oninput="this.value = 
+                            !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null">
+                            <div class="invalid-feedback">
+                              Please enter a name
+                            </div>
                           </div>
                         </div>
                         <div class="form-group row align-items-center">
@@ -74,14 +93,18 @@
                               <div class="input-group-prepend">
                                 <span class="input-group-text">&#8358;</span>
                               </div>
+<<<<<<< HEAD
                               <input type="text" name="cost" class="form-control" aria-label="Amount (to the nearest dollar)">
+=======
+                              <input type="text" class="form-control" aria-label="Amount">
+>>>>>>> b64feed19b106cec5bd7199ba3c6ae47015591cc
                               <div class="input-group-append">
                                 <span class="input-group-text">.00</span>
                               </div>
+                              <div class="invalid-feedback">
+                                Please enter a price range
+                              </div>
                             </div>
-                          </div>
-                          <div class="invalid-feedback">
-                            Please enter a price range
                           </div>
                         </div>
                         <div class="form-group row align-items-center">
@@ -94,14 +117,14 @@
                           </div>
                         </div>
                         <div class="form-group row">
-                          <label class="col-md-4 text-md-right text-left mt-2">Property Photos</label>
+                          <label class="col-md-4 text-md-right text-left mt-2">Property Photo</label>
                           <div class="col-sm-12 col-md-7">
                             <div id="image-preview" class="">
-                              <input type="file" name="image" id="image-upload" required="required" multiple/>
+                              <input type="file" name="image" id="image-upload" required="required"/>
                             </div>
                           </div>
                         </div>
-                        <div class="form-group row">
+                        <!-- <div class="form-group row">
                           <label class="col-md-4 text-md-right text-left mt-2">Status</label>
                           <div class="col-lg-4 col-md-6">
                             <div class="selectgroup w-100">
@@ -115,7 +138,7 @@
                               </label>
                             </div>
                           </div>
-                        </div>
+                        </div> -->
                         <div class="form-group row">
                           <div class="col-md-4"></div>
                           <div class="col-lg-4 col-md-6 text-right">
@@ -137,5 +160,5 @@
 
 {% block page_js %} 
   <!-- Page Specific JS File -->
-  <!-- <script src="{% static 'js/index.js' %}"></script> -->
+  <!-- <script src="{% static 'js/page/index.js' %}"></script> -->
 {% endblock %}
