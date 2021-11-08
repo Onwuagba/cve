@@ -85,6 +85,8 @@
                           <th>Date Added</th>
                           <th></th>
                         </tr>
+                        {% if owners%}
+                        {% for owner in owners %}
                         <tr>
                           <td>
                             <div class="custom-checkbox custom-control">
@@ -94,49 +96,20 @@
                           </td>
                           <td>CVE-87239
                           </td>
+                          <td>{{owner.first_name}}</td>
+                          <td class="font-weight-600">{{owner.email}}</td>
+                          <td>{{owner.phone_number}}</td>
                           <td>Emmanuel</td>
-                          <td class="font-weight-600">kene@gmail.com</td>
-                          <td>09062634116</td>
-                          <td>Emmanuel</td>
-                          <td>01-10-2018</td>
+                          <td>{{owner.date_joined.date}}</td>
                           <td><a href="#" class="btn btn-cve">More...</a></td>
                         </tr>
+                        {% endfor %}
+                        {% endif %}
                         
-                        <tr>
-                          <td>
-                            <div class="custom-checkbox custom-control">
-                              <input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" id="checkbox-2">
-                              <label for="checkbox-2" class="custom-control-label">&nbsp;</label>
-                            </div>
-                          </td>
-                          <td>CVE-87239
-                          </td>
-                          <td>Emmanuel</td>
-                          <td class="font-weight-600">kene@gmail.com</td>
-                          <td>09062634116</td>
-                          <td>Emmanuel</td>
-                          <td>01-10-2018</td>
-                          <td><a href="#" class="btn btn-cve">More...</a></td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <div class="custom-checkbox custom-control">
-                              <input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" id="checkbox-2">
-                              <label for="checkbox-2" class="custom-control-label">&nbsp;</label>
-                            </div>
-                          </td>
-                          <td>CVE-87239
-                          </td>
-                          <td>Emmanuel</td>
-                          <td class="font-weight-600">kene@gmail.com</td>
-                          <td>09062634116</td>
-                          <td>Emmanuel</td>
-                          <td>01-10-2018</td>
-                          <td><a href="#" class="btn btn-cve">More...</a></td>
-                        </tr>
+            
                       </table>
                     </div>
-                    <div class="float-right">
+                    <!-- <div class="float-right">
                       <nav>
                         <ul class="pagination">
                           <li class="page-item disabled">
@@ -162,7 +135,7 @@
                           </li>
                         </ul>
                       </nav>
-                    </div>
+                    </div> -->
                   </div>
                 </div>
               </div>
