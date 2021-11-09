@@ -1,10 +1,5 @@
-<<<<<<< HEAD
-from django.core import exceptions
-from django.shortcuts import render, redirect
-=======
 import uuid
 from django.shortcuts import render, redirect, get_object_or_404
->>>>>>> b64feed19b106cec5bd7199ba3c6ae47015591cc
 from django.contrib.auth.models import auth
 from django.contrib.auth.decorators import login_required
 # from django.contrib.auth import get_user_model as User
@@ -20,32 +15,10 @@ def home(request):
     context = {
         'page': 'Dashboard',
     }
-<<<<<<< HEAD
-    if request.user.is_staff:
-        # print ("This is a staff")
-        return render(request, "user/dashboard.html", context)
-    else:
-        # print (user.user_role)
-        # print ("This is a user")
-        return render(request, "cve_user/user_dash.html")
-        # return redirect("cvapp:userDash")
-    # return render(request, "user/dashboard.html", context)
-
-# @login_required
-# def staffHome(request):
-#     return render(request, "cv_staff/staff_home.html")
-
-# def userDash(request):
-#     context = {
-#         'page': 'dash',
-#     }
-#     return render(request, "cve_user/user_dash.html", context)
-=======
     if request.user.user_role == 'S':
         return render(request, "user/dashboard.html", context)
     else:
         return render(request, "cve_user/user_dash.html", context)
->>>>>>> b64feed19b106cec5bd7199ba3c6ae47015591cc
 
 @login_required
 def userProp(request):
@@ -217,6 +190,54 @@ def addOwner(request):
     context = {'page':'Add Owner'}
     return render(request, "user/add-home-owner.html", context)
 
+def addStaff(request):
+    user1 = request.user
+    # print (User.objects.get(id=user1.user_role))
+    if request.method == 'POST':
+        try:
+            user = User.objects.get(id=user1.id)
+            first_name = request.POST.get('firstname')
+            last_name = request.POST.get('lastname')
+            email = request.POST.get('email')
+            phone_number = request.POST.get('phoneNumber')
+            pass1 = request.POST.get('password')
+            # img = request.POST.get('image')
+            context = {
+                'passa':pass1,
+                'first_name':first_name,
+                'last_name':last_name,
+                'email':email,
+                'phone_number':phone_number,
+                # 'img':img,
+                'page':'Add Staff'
+            }
+            if User.objects.filter(email=email).exists():
+                messages.error(request, 'Email already exists.')
+                return render(request, "user/add-home-owner.html", context)
+            elif User.objects.filter(phone_number=phone_number).exists():
+                messages.error(request, 'Phone number already exists.')
+                return render(request, "user/add-home-owner.html", context)
+            else:
+                user = User(email=email)
+                user.first_name = first_name
+                user.last_name = last_name
+                user.phone_number = phone_number
+                user.default_pwd = True
+                user.user_role = "S"
+                # user.profile_photo = img
+                user.set_password(pass1)
+                # print(user)
+                user.save()
+                success_note = {
+                    'passa':pass1,
+                    'page':'Add Staff'
+                }
+                return render(request, "user/add-staff.html", success_note)
+        except ObjectDoesNotExist:
+            messages.error(request, 'Unauthorised access')
+    context = {'page':'Add Staff'}
+    return render(request, "user/add-staff.html", context)
+
 @login_required
 def addProp(request):
     user1 = request.user
@@ -225,8 +246,9 @@ def addProp(request):
     if request.method == 'POST':
         try:
             user = User.objects.get(id=user1.id)
-            house_id = request.POST.get('houseID')
-            location = request.POST.get('location')
+            # house_id = request.POST.get('houseID')
+            location = request.POST.get('address')
+            progress = request.POST.get('progress')
             cost = request.POST.get('cost')
             description = request.POST.get('description')
             img = request.POST.get('image')
@@ -235,17 +257,12 @@ def addProp(request):
             elif int(cost) < 1000000:
                 messages.info(request, 'Cost too low')
             else:
-                house = HouseInfo(street_info=location, cost=cost, desription=description, images=[img])
+                house = HouseInfo(street_info=location, progress=progress, cost=cost, desription=description, images=[img])
                 house.created_by = user
                 house.save()
                 context = {
-<<<<<<< HEAD
-                    'passa': house_id,
-                    'page':'addprop'
-=======
-                    'passa':pass1,
+                    'success': 'House successfully created',
                     'page':'Add Property'
->>>>>>> b64feed19b106cec5bd7199ba3c6ae47015591cc
                 }
                 return render(request, "user/add-property.html", context)
         except BaseException:
@@ -254,41 +271,33 @@ def addProp(request):
     context = {'page':'Add Property'}
     return render(request, "user/add-property.html", context)
 
-def propView(request, id):
-    # print (request.GET.get(id))
-    propName = request.GET.get(id)
-    context = {
-        'page': 'propView',
-        'prop' : propName
-    }
-    return render(request, "user/property-view.html", context)
-
 # list all property
 @login_required
 def allProp(request):
     properties = HouseInfo.objects.all()
     context = {
-<<<<<<< HEAD
-        'page': 'allprop',
+        'page': 'All Properties',
         'properties': properties,
-=======
-        'page': 'Properties',
->>>>>>> b64feed19b106cec5bd7199ba3c6ae47015591cc
     }
 
     return render(request, "user/all-property.html", context)
+
+@login_required
+def allStaff(request):
+    staffs = User.objects.filter(user_role="S")
+    context = {
+        'page': 'All Staff',
+        'owners': staffs,
+    }
+    return render(request, "user/all-staff.html", context)
 
 # list all owners
 @login_required
 def allOwner(request):
     owners = User.objects.filter(user_role="H")
     context = {
-<<<<<<< HEAD
-        'page': 'allowner',
+        'page': 'All Owners',
         'owners': owners,
-=======
-        'page': 'Home Owners',
->>>>>>> b64feed19b106cec5bd7199ba3c6ae47015591cc
     }
     return render(request, "user/all-owners.html", context)
 
@@ -299,14 +308,3 @@ def allOwner(request):
 def logout(request):
     auth.logout(request)
     return redirect("cvapp:login")
-<<<<<<< HEAD
-
-
-
-# USER VIEW
-@login_required
-def userDash(request):
-    return render(request, "cve_user/user_dash.html")
-
-=======
->>>>>>> b64feed19b106cec5bd7199ba3c6ae47015591cc

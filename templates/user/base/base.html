@@ -196,7 +196,7 @@
                 <a href="{% url 'cvapp:home' %}" class="nav-link"><i class="fas fa-laptop"></i><span>Dashboard</span></a>
               </li>
               <li class="menu-header">The Estate</li>
-              <li class="nav-item {% if page == 'Properties' %}active{% endif %}">
+              <li class="nav-item {% if page == 'All Properties' %}active{% endif %}">
                 <a href="{% url 'cvapp:aProp' %}" class="nav-link"><i class="fas fa-city"></i> <span>All Properties</span></a>
               </li>
               <li class="nav-item {% if page == 'Add Property' %}active{% endif %}">
@@ -206,18 +206,18 @@
                 <a href="" class="nav-link"><i class="fas fa-map-marked-alt"></i> <span>Assign Property</span></a>
               </li>
               <li class="menu-header">Home Owners</li>
-              <li class="nav-item {% if page == 'Home Owners' %}active{% endif %}">
+              <li class="nav-item {% if page == 'All Owners' %}active{% endif %}">
                 <a href="{% url 'cvapp:aOwner' %}" class="nav-link"><i class="fas fa-users-cog"></i> <span>All Owners</span></a>
               </li>
               <li class="nav-item {% if page == 'Add Owner' %}active{% endif %}">
                 <a href="{% url 'cvapp:addOwner' %}" class="nav-link"><i class="fas fa-user-plus"></i> <span>New Owner</span></a>
               </li>
               <li class="menu-header">Manage Staff</li>
-              <li class="nav-item">
-                <a href="#" class="nav-link"><i class="fas fa-users"></i> <span>All Staff</span></a>
+              <li class="nav-item {% if page == 'All Staff' %}active{% endif %}">
+                <a href="{% url 'cvapp:aStaff' %}" class="nav-link"><i class="fas fa-users"></i> <span>All Staff</span></a>
               </li>
-              <li class="nav-item">
-                <a href="#" class="nav-link"><i class="fas fa-id-badge"></i> <span>Add Staff</span></a>
+              <li class="nav-item {% if page == 'Add Staff' %}active{% endif %}">
+                <a href="{% url 'cvapp:addStaff' %}" class="nav-link"><i class="fas fa-id-badge"></i> <span>Add Staff</span></a>
               </li>
               <li class="menu-header">Others</li>
               <li class="nav-item {% if page == 'Feature' or page == 'Add Feature' %}active{% endif %}">

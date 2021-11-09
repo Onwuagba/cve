@@ -2,15 +2,14 @@
 
 {% block content %}
 {% load static %}
-{% load aMill from convert %}
 
       <!-- Main Content -->
       <div class="main-content">
         <section class="section">
           <div class="section-header">
-            <h1>CVE Properties</h1>
+            <h1>Staffs</h1>
             <div class="section-header-button">
-              <a href="{% url 'cvapp:addProp' %}" class="btn btn-cve">Create New</a>
+              <a href="{% url 'cvapp:addStaff' %}" class="btn btn-cve">Add Staff</a>
             </div>
             <div class="section-header-breadcrumb">
               <div class="breadcrumb-item"><a href="{% url 'cvapp:home' %}">Dashboard</a></div>
@@ -18,11 +17,12 @@
             </div>
           </div>
           <div class="section-body">
-            <h2 class="section-title">Property</h2>
-            <p class="section-lead" >
-              Manage properties here
+            <!-- <h2 class="section-title">Property</h2> -->
+            <p class="section-lead">
+              View all your staffs here
             </p>
-            <div class="row">
+
+            <!-- <div class="row">
               <div class="col-12">
                 <div class="card mb-0">
                   <div class="card-body">
@@ -40,21 +40,21 @@
                   </div>
                 </div>
               </div>
-            </div>
+            </div> -->
             <div class="row mt-4">
               <div class="col-12">
                 <div class="card">
                   <div class="card-header">
-                    <h4>All Properties</h4>
+                    <h4>CVE Staffs</h4>
                   </div>
                   <div class="card-body">
-                    <div class="float-left">
+                    <!-- <div class="float-left">
                       <select class="form-control selectric">
                         <option>Selected</option>
                         <option>Change to Sold</option>
                         <option>Change to Not Sold</option>
                       </select>
-                    </div>
+                    </div> -->
                     <div class="float-right">
                       <form>
                         <div class="input-group">
@@ -77,15 +77,16 @@
                               <label for="checkbox-all" class="custom-control-label">&nbsp;</label>
                             </div>
                           </th>
-                          <th>Property ID</th>
-                          <th>Progress</th>
-                          <th>Price</th>
-                          <th>Address</th>
+                          <th>Client ID</th>
+                          <th>First Name</th>
+                          <th>Email</th>
+                          <th>Phone Number</th>
                           <th>Added By</th>
-                          <th>Created On</th>
-                          <th>Status</th>
+                          <th>Date Added</th>
+                          <th></th>
                         </tr>
-                        {% for property in properties %}
+                        {% if owners%}
+                        {% for owner in owners %}
                         <tr>
                           <td>
                             <div class="custom-checkbox custom-control">
@@ -94,31 +95,21 @@
                             </div>
                           </td>
                           <td>CVE-87239
-                            <div class="table-links">
-                              <a href="#">View</a>
-                              <div class="bullet"></div>
-                              <a href="#" class="text-danger">Delete</a>
-                            </div>
                           </td>
-                          <td class="align-middle">
-                          <div class="media-progressbar">
-                            <div class="progress-text">{{property.progress}}%</div>
-                            <div class="progress" data-height="4">
-                              <div class="progress-bar bg-cve" data-width="{{property.progress}}%"></div>
-                            </div>
-                          </div>
-                          </td>
-                          <td class="font-weight-600">&#8358;{{property.cost | aMill}}M</td>
-                          <td>{{property.street_info | truncatewords:3 }}</td>
-                          <td>Buhari</td>
-                          <td>{{property.date_created.date}}</td>
-                          <td><div class="badge badge-cve-pry">Sold</div></td>
+                          <td>{{owner.first_name}}</td>
+                          <td class="font-weight-600">{{owner.email}}</td>
+                          <td>{{owner.phone_number}}</td>
+                          <td>Emmanuel</td>
+                          <td>{{owner.date_joined.date}}</td>
+                          <td><a href="#" class="btn btn-cve">More...</a></td>
                         </tr>
                         {% endfor %}
+                        {% endif %}
                         
+            
                       </table>
                     </div>
-                    <div class="float-right">
+                    <!-- <div class="float-right">
                       <nav>
                         <ul class="pagination">
                           <li class="page-item disabled">
@@ -144,7 +135,7 @@
                           </li>
                         </ul>
                       </nav>
-                    </div>
+                    </div> -->
                   </div>
                 </div>
               </div>

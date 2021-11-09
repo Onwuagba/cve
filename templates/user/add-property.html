@@ -43,9 +43,9 @@
                           <b>{{ message }}</b>
                         </div>
                       {% endfor %}
-                    {% elif passa %}
+                    {% elif success %}
                       <div class="alert alert-success text-center" role="alert">
-                        House <b>{{ passa }}</b> has successfully being created. 
+                        {{ success }}
                       </div>
                     {% endif %}
 
@@ -55,10 +55,10 @@
                         <div class="form-group row align-items-center">
                           <label class="col-md-4 text-md-right text-left">Property ID</label>
                           <div class="col-lg-4 col-md-6">
-                            <input type="text" name="houseID" class="form-control" required="">
+                            <input type="text" name="houseID" class="form-control" required=""readonly disabled="" placeholder="CVE-000">
                           </div>
                         </div>
-                        <div class="form-group row align-items-center">
+                        <!-- <div class="form-group row align-items-center">
                           <label class="col-md-4 text-md-right text-left">Name</label>
                           <div class="col-lg-4 col-md-6">
                             <input type="text" name="name" class="form-control" required="">
@@ -66,20 +66,20 @@
                               Please enter a name
                             </div>
                           </div>
-                        </div>
+                        </div> -->
                         <div class="form-group row align-items-center">
-                          <label class="col-md-4 text-md-right text-left">Title</label>
+                          <label class="col-md-4 text-md-right text-left">Address</label>
                           <div class="col-lg-4 col-md-6">
-                            <input type="text" name="title" class="form-control" required>
+                            <input type="text" name="address" class="form-control" required>
                             <div class="invalid-feedback">
                               Please enter a title
                             </div>
                           </div>
                         </div>
                         <div class="form-group row align-items-center">
-                          <label class="col-md-4 text-md-right text-left">Quantity</label>
+                          <label class="col-md-4 text-md-right text-left">Progress</label>
                           <div class="col-lg-4 col-md-6">
-                            <input type="number" name="name" class="form-control" required="" min="0"  oninput="this.value = 
+                            <input type="number" name="progress" class="form-control" required="" min="0"  oninput="this.value = 
                             !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null">
                             <div class="invalid-feedback">
                               Please enter a name
@@ -93,11 +93,7 @@
                               <div class="input-group-prepend">
                                 <span class="input-group-text">&#8358;</span>
                               </div>
-<<<<<<< HEAD
                               <input type="text" name="cost" class="form-control" aria-label="Amount (to the nearest dollar)">
-=======
-                              <input type="text" class="form-control" aria-label="Amount">
->>>>>>> b64feed19b106cec5bd7199ba3c6ae47015591cc
                               <div class="input-group-append">
                                 <span class="input-group-text">.00</span>
                               </div>
