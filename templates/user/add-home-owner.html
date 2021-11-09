@@ -53,12 +53,6 @@
                       {% csrf_token %}
                       <div class="wizard-pane">
                         <div class="form-group row align-items-center">
-                          <label class="col-md-4 text-md-right text-left">Client ID</label>
-                          <div class="col-lg-4 col-md-6">
-                            <input type="text" name="staffID" class="form-control" required=""readonly disabled="" placeholder="CVE_000">
-                          </div>
-                        </div>
-                        <div class="form-group row align-items-center">
                           <label for="firstname" class="col-md-4 text-md-right text-left">First Name</label>
                           <div class="col-lg-4 col-md-6">
                             <input id="firstname" type="text" name="firstname" class="form-control" value='{{ first_name }}' required autofocus>

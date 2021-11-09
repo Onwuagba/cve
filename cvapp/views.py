@@ -179,6 +179,7 @@ def addOwner(request):
                 user.phone_number = phone_number
                 user.default_pwd = True
                 user.user_role = "H"
+                user.added_by = user1.first_name
                 # user.profile_photo = img
                 user.set_password(pass1)
                 # print(user)
@@ -247,23 +248,29 @@ def addStaff(request):
 @login_required
 def addProp(request):
     user1 = request.user
-    # print(user1.id)
-    # print (User.objects.get(id=user1.user_role))
     if request.method == 'POST':
         try:
             user = User.objects.get(id=user1.id)
             # house_id = request.POST.get('houseID')
-            location = request.POST.get('address')
+            title = request.POST.get('title')
+            quantity = request.POST.get('quantity')
             progress = request.POST.get('progress')
             cost = request.POST.get('cost')
             description = request.POST.get('description')
             img = request.POST.get('image')
-            if HouseInfo.objects.filter(street_info=location).exists():
-                messages.info(request, 'House ID has been used')
-            elif int(cost) < 1000000:
-                messages.info(request, 'Cost too low')
+            context = {
+                'title':title,
+                'quantity':quantity,
+                'progress':progress,
+                'cost':cost,
+                # 'img':img,
+                'page':'Add Property'
+            }
+            if HouseInfo.objects.filter(title=title).exists():
+                messages.info(request, 'Property title already exists')
+                return render(request, "user/add-property.html", context)
             else:
-                house = HouseInfo(street_info=location, progress=progress, cost=cost, desription=description, images=[img])
+                house = HouseInfo(title=title, progress=progress, quantity=quantity, cost=cost, desription=description, images=img)
                 house.created_by = user
                 house.save()
                 context = {
@@ -271,30 +278,24 @@ def addProp(request):
                     'page':'Add Property'
                 }
                 return render(request, "user/add-property.html", context)
-        except BaseException:
+        except ObjectDoesNotExist:
             messages.error(request, 'Unauthorised access')
-    
+            return redirect("cvapp:logout")
     context = {'page':'Add Property'}
     return render(request, "user/add-property.html", context)
 
 # list all property
 @login_required
-def allProp(request, id):
+def allProp(request):
     properties = HouseInfo.objects.all()
 
-    number_allowed = 5
-    number_of_pages = int(len(properties)//number_allowed)
-    if (number_of_pages % number_allowed) > 0:
-        number_of_pages += 1
-
-    paginator = Paginator(properties, number_allowed)
-    page_obj = paginator.get_page(id)
+    paginator = Paginator(properties, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
 
     context = {
         'page': 'All Properties',
         'properties': page_obj,
-        'pages': range(1, number_of_pages+1),
-        'id': id
     }
 
     return render(request, "user/all-property.html", context)
@@ -312,15 +313,14 @@ def allStaff(request):
 @login_required
 def allOwner(request):
     owners = User.objects.filter(user_role="H")
+    paginator = Paginator(owners, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
     context = {
         'page': 'All Owners',
-        'owners': owners,
+        'owners': page_obj,
     }
     return render(request, "user/all-owners.html", context)
-
-# @login_required
-# def addOwner(request):
-#     return render(request, "user/add-home-owner.html")
 
 def logout(request):
     auth.logout(request)

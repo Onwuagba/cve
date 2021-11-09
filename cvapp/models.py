@@ -49,6 +49,7 @@ class User(AbstractUser):
     regToken = models.UUIDField(default=uuid.uuid4, editable=False, unique=True, verbose_name='token') ##for new registrations
     # profile_photo = models.ImageField(upload_to='img/profilePhoto/', verbose_name="profile photo", blank=True, null=True, unique=True)
     date_updated = models.DateTimeField(auto_now=True)
+    added_by = models.CharField(max_length=150, null=False, blank=False, unique=False) #change once db is rearranged
     USER_ROLE = [
         ('S', 'Staff'), 
         ('H', 'Home Owner'),
@@ -65,12 +66,13 @@ class User(AbstractUser):
 
 class HouseInfo(models.Model):
     house_id = models.AutoField(primary_key=True, verbose_name='House ID')
-    street_info = models.CharField(max_length=80, unique=True)
+    title = models.CharField(max_length=80, unique=True)
     progress = models.IntegerField(null=False, blank=False)
+    quantity = models.IntegerField(null=False, blank=False)
     cost = models.DecimalField(max_digits=15, decimal_places=2)
     desription = models.TextField(null=False, blank=False)
-    images = ArrayField(models.ImageField(upload_to='img/housePhotos/', unique=True), blank=True)
-    created_by = models.ForeignKey(User, on_delete=models.CASCADE)
+    images = models.ImageField(upload_to='img/housePhotos/', unique=True)
+    created_by = models.ForeignKey(User, related_name='staff_add', on_delete=models.CASCADE)
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
     deleted = models.BooleanField(default=False)

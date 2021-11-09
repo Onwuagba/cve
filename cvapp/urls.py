@@ -13,12 +13,12 @@ urlpatterns = [
 
     #staff URLs
     path("", home, name='home'),
-    path("property/<int:id>", allProp, name='aProp'),
+    path("all-property/", allProp, name='aProp'),
     path("add-property/", addProp, name='addProp'),
     path("add-client/", addOwner, name='addOwner'),
     path("add-staff/", addStaff, name='addStaff'),
     path("home-owners/", allOwner, name='aOwner'),
-    path("all-staffs/", allStaff, name='aStaff'),
+    path("all-staff/", allStaff, name='aStaff'),
     path("add-feature/", addFeature, name='addFeature'),
     path("features/", allFeature, name='allFeature'),
     path("project-update/", allPUpdate, name='allPUpdate'),

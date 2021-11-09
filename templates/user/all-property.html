@@ -2,7 +2,8 @@
 
 {% block content %}
 {% load static %}
-{% load aMill from convert %}
+{% load humanize %}
+<!-- {% load aMill from convert %} -->
 
       <!-- Main Content -->
       <div class="main-content">
@@ -29,12 +30,6 @@
                     <ul class="nav nav-pills">
                       <li class="nav-item">
                         <a class="nav-link active" href="#">All <span class="badge badge-white">5</span></a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link" href="#">Sold <span class="badge badge-cve-pry">1</span></a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link" href="#">Not Sold <span class="badge badge-cve">0</span></a>
                       </li>
                     </ul>
                   </div>
@@ -77,13 +72,14 @@
                               <label for="checkbox-all" class="custom-control-label">&nbsp;</label>
                             </div>
                           </th>
-                          <th>Property ID</th>
+                          <th>Title</th>
+                          <th>Quantity</th>
+                          <th># Assigned</th>
                           <th>Progress</th>
                           <th>Price</th>
-                          <th>Address</th>
                           <th>Added By</th>
                           <th>Created On</th>
-                          <th>Status</th>
+                          <!-- <th>Status</th> -->
                         </tr>
                         {% for property in properties %}
                         <tr>
@@ -93,13 +89,14 @@
                               <label for="checkbox-{{property.house_id}}" class="custom-control-label">&nbsp;</label>
                             </div>
                           </td>
-                          <td>CVE-87239
+                          <td>{{property.title }}
                             <div class="table-links">
                               <a href="#">View</a>
                               <div class="bullet"></div>
                               <a href="#" class="text-danger">Delete</a>
-                            </div>
-                          </td>
+                            </div></td>
+                          <td class="text-center">{{property.quantity }}</td>
+                          <td class="text-center">0</td>
                           <td class="align-middle">
                           <div class="media-progressbar">
                             <div class="progress-text">{{property.progress}}%</div>
@@ -108,45 +105,62 @@
                             </div>
                           </div>
                           </td>
-                          <td class="font-weight-600">&#8358;{{property.cost | aMill}}M</td>
-                          <td>{{property.street_info | truncatewords:3 }}</td>
-                          <td>Buhari</td>
+                          <td class="font-weight-600">&#8358;{{property.cost | intcomma}}</td>
+                          <td>{{property.created_by}}</td>
                           <td>{{property.date_created.date}}</td>
-                          <td><div class="badge badge-cve-pry">Sold</div></td>
+                          <!-- <td><div class="badge badge-cve-pry">Sold</div></td> -->
                         </tr>
                         {% endfor %}
                         
                       </table>
                     </div>
+                    <hr>
+
+                    {% if properties.has_other_pages %}
                     <div class="float-right">
                       <nav>
                         <ul class="pagination">
-                          <li class="page-item disabled">
-                            <a class="page-link" href="#" aria-label="Previous">
+                          {% if users.has_previous %}
+                          <li class="page-item">
+                            <a class="page-link" href="?page={{ properties.previous_page_number }}" aria-label="Previous">
                               <span aria-hidden="true">&laquo;</span>
                               <span class="sr-only">Previous</span>
                             </a>
                           </li>
-                          {% for i in pages%}
-                          <li class="page-item {% if id == i %}active{% endif %}">
-                            <a class="page-link" href="{% url 'cvapp:aProp' id=i %}">{{i}}</a>
+                          {% else %}
+                          <li class="page-item">
+                              <span aria-hidden="true">&laquo;</span>
+                              <span class="sr-only">Previous</span>
                           </li>
+                          {% endif %}
+                          {% for i in properties.paginator.page_range %}
+                            {% if properties.number == i %}
+                              <li class="page-item active">
+                                <a class="page-link" href="#">{{ i }}</a>
+                              </li>
+                            {% else %}
+                              <li class="page-item">
+                                <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+                              </li>
+                            {% endif %}
                           {% endfor %}
-                          <!-- <li class="page-item">
-                            <a class="page-link" href="#">2</a>
-                          </li>
-                          <li class="page-item">
-                            <a class="page-link" href="#">3</a>
-                          </li> -->
-                          <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Next">
-                              <span aria-hidden="true">&raquo;</span>
-                              <span class="sr-only">Next</span>
-                            </a>
-                          </li>
+                          {% if page_obj.has_next %}
+                            <li class="page-item">
+                              <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                                <span class="sr-only">Next</span>
+                              </a>
+                            </li>
+                          {% else %}
+                            <li class="page-item">
+                                <span aria-hidden="true">&raquo;</span>
+                                <span class="sr-only">Next</span>
+                            </li>
+                          {% endif %}
                         </ul>
                       </nav>
                     </div>
+                    {% endif %}
                   </div>
                 </div>
               </div>
