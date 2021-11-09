@@ -144,7 +144,8 @@ def resetPass(request, token):
 @login_required
 def addOwner(request):
     user1 = request.user
-    # print (User.objects.get(id=user1.user_role))
+    # print (user1)
+    # if user1.user_role == 'S': #use permissions instead
     if request.method == 'POST':
         try:
             user = User.objects.get(id=user1.id)
@@ -189,6 +190,9 @@ def addOwner(request):
             messages.error(request, 'Unauthorised access')
     context = {'page':'Add Owner'}
     return render(request, "user/add-home-owner.html", context)
+    # else:
+    #     messages.error(request, 'Unauthorised access')
+    #     return redirect("cvapp:logout")
 
 @login_required
 def addProp(request):
