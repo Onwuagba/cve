@@ -13,7 +13,7 @@ urlpatterns = [
 
     #staff URLs
     path("", home, name='home'),
-    path("property/", allProp, name='aProp'),
+    path("property/<int:id>", allProp, name='aProp'),
     path("add-property/", addProp, name='addProp'),
     path("add-client/", addOwner, name='addOwner'),
     path("add-staff/", addStaff, name='addStaff'),

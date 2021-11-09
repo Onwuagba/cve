@@ -1,4 +1,5 @@
 import uuid
+from django.core import paginator
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import auth
 from django.contrib.auth.decorators import login_required
@@ -6,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from .models import HouseInfo, User
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.paginator import Paginator
 from django.contrib.auth.hashers import check_password
 
 # Create your views here.
@@ -273,11 +275,22 @@ def addProp(request):
 
 # list all property
 @login_required
-def allProp(request):
+def allProp(request, id):
     properties = HouseInfo.objects.all()
+
+    number_allowed = 5
+    number_of_pages = int(len(properties)//number_allowed)
+    if (number_of_pages % number_allowed) > 0:
+        number_of_pages += 1
+
+    paginator = Paginator(properties, number_allowed)
+    page_obj = paginator.get_page(id)
+
     context = {
         'page': 'All Properties',
-        'properties': properties,
+        'properties': page_obj,
+        'pages': range(1, number_of_pages+1),
+        'id': id
     }
 
     return render(request, "user/all-property.html", context)

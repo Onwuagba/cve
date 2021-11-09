@@ -197,7 +197,7 @@
               </li>
               <li class="menu-header">The Estate</li>
               <li class="nav-item {% if page == 'All Properties' %}active{% endif %}">
-                <a href="{% url 'cvapp:aProp' %}" class="nav-link"><i class="fas fa-city"></i> <span>All Properties</span></a>
+                <a href="{% url 'cvapp:aProp' id=1%}" class="nav-link"><i class="fas fa-city"></i> <span>All Properties</span></a>
               </li>
               <li class="nav-item {% if page == 'Add Property' %}active{% endif %}">
                 <a href="{% url 'cvapp:addProp' %}" class="nav-link"><i class="fas fa-home"></i> <span>Add New Property</span></a>
