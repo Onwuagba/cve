@@ -3,6 +3,11 @@
 {% block content %}
 {% load static %}
 
+<style>
+  .list-group-item:first-child{
+    border-top: 0px !important;
+  }
+</style>
       <!-- Main Content -->
       <div class="main-content">
         <section class="section">
@@ -93,7 +98,7 @@
                     <h4>My Properties</h4>
                   </div>
                   <div class="card-body">
-                    3
+                    1
                   </div>
                 </div>
               </div>
@@ -106,10 +111,10 @@
                 <!-- <a href="#" class="dash_head"> -->
                   <div class="card-wrap">
                     <div class="card-header">
-                      <h4>Property Value</h4>
+                      <h4>Purchase Value</h4>
                     </div>
                     <div class="card-body">
-                      &#8358;124.5M
+                      &#8358;44.9M
                     </div>
                   </div>
                 <!-- </a> -->
@@ -125,54 +130,9 @@
                     <h4>Payment Balance</h4>
                   </div>
                   <div class="card-body">
-                    &#8358;14.5M
+                    &#8358;12.5M
+                    <div class="text-muted font-weight-bold" style="color:#1f326f; font-size: 12px;">Next payment due: 15 Nov 2021</div>
                   </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-lg-8 col-md-6 col-sm-6 col-12">
-              <!-- <div class="card card-statistic-1">
-                <div class="card-icon bg-cve">
-                  <i class="fas fa-home"></i>
-                </div>
-                <div class="card-wrap">
-                  <div class="card-header">
-                    <h4>My Properties</h4>
-                  </div>
-                  <div class="card-body">
-                    10
-                  </div>
-                </div>
-              </div> -->
-              <h4 class="section-title mt-0">Expected Outcome</h4>
-              <img class="d-block w-100" src="{% static '/img/u5.webp' %}" alt="Completed Sample" height="300">
-            </div>
-            <div class="col-lg-4 col-md-6 col-sm-6 col-12">
-              <div class="card profile-widget" style="margin-top: 0px!important;">
-                <!-- <div class="profile-widget-header"> -->
-                  <div class="profile-widget-items">
-                    <div class="profile-widget-item">
-                      <div class="profile-widget-item-label">Units</div>
-                      <div class="profile-widget-item-value">175</div>
-                    </div>
-                    <div class="profile-widget-item">
-                      <div class="profile-widget-item-label">% Completed</div>
-                      <div class="profile-widget-item-value">30%</div>
-                    </div>
-                    <div class="profile-widget-item">
-                      <div class="profile-widget-item-label">Delivery Date</div>
-                      <div class="profile-widget-item-value">Oct 2022</div>
-                    </div>
-                  </div>
-                <!-- </div> -->
-                <div class="profile-widget-description">
-                  <div class="text-muted font-weight-normal"> Welcome to the home of your dreams!</div><br/>
-                  Construction at the <b>Citadel Views Estate</b> is currently at 30% and is expected to be completed in about 6 months.<br/> A total of <b>50 units</b> have been completed and distribution is scheduled to begin next week. 
-                    <a href="#ConstructionProgress">
-                      <div class="font-weight-bold mt-4"><i class="fas fa-angle-double-down"></i>&nbsp;View progress of construction</div>
-                    </a>
                 </div>
               </div>
             </div>
@@ -191,21 +151,19 @@
                         <div class="mb-2">
                           <span class="text-job text-primary">20.Oct.2021</span>
                           <span class="bullet"></span>
-                          <a class="text-job" href="#">View</a>
                         </div>
-                        <p>30 units within the estate completed and ready for commissioning
+                        <p>Work in progress
                         </p>
                         <div class="card">
                           <div class="card-body">
                             <div class="gallery gallery-md">
-                              <div class="gallery-item" data-image="{% static '/img/u5.webp' %}" data-title="Image 1"></div>
-                              <div class="gallery-item" data-image="{% static '/img/u2.webp' %}" data-title="Image 2"></div>
-                              <div class="gallery-item" data-image="{% static '/img/u3.webp' %}" data-title="Image 3"></div>
-                              <div class="gallery-item" data-image="{% static '/img/u4.webp' %}" data-title="Image 4" type="image/webp"></div>
-                              <div class="gallery-item gallery-more" data-image="{% static '/img/u5.webp' %}" data-title="Image 12" type="image/webp">
+                              <div class="gallery-item" data-image="{% static '/img/cve-new1.webp' %}" data-title="New update"></div>
+                              <div class="gallery-item" data-image="{% static '/img/cve-new4.webp' %}" data-title="New update"></div>
+                              <div class="gallery-item" data-image="{% static '/img/cve-new6.webp' %}" data-title="New update" type="image/webp"></div>
+                              <div class="gallery-item gallery-more" data-image="{% static '/img/cve-new5.webp' %}" data-title="Image 12" type="image/webp">
                                 <div>+2</div>
                               </div>
-                              <div class="gallery-item gallery-hide" data-image="../assets/img/news/img01.webp" data-title="Image 9"></div>
+                              <div class="gallery-item gallery-hide" data-image="{% static '/img/cve-new6.webp' %}" data-title="Image 9"></div>
                             </div>
                           </div>
                         </div>
@@ -219,24 +177,22 @@
                         <div class="mb-2">
                           <span class="text-job text-primary">20.Oct.2021</span>
                           <span class="bullet"></span>
-                          <a class="text-job" href="#">View</a>
+                          <span class="text-job" >The pool</span>
                         </div>
-                        <p>Pool are currently being added to about 50 units within the estate
+                        <p>The swimming pool for the estate is complete
                         </p>
                         <div class="card">
                           <div class="card-body">
                             <div class="gallery gallery-md">
                               <div class="gallery-item" data-image="{% static '/img/CVE-001.webp' %}" data-title="Image 1"></div>
-                              <div class="gallery-item" data-image="{% static '/img/CVE-004.webp' %}" data-title="Image 2"></div>
                               <div class="gallery-item" data-image="{% static '/img/CVE-003.webp' %}" data-title="Image 3"></div>
                               <div class="gallery-item" data-image="{% static '/img/CVE-002.webp' %}" data-title="Image 4"></div>
-                              <div class="gallery-item gallery-hide" data-image="../assets/img/news/img01.webp" data-title="Image 9"></div>
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                    <div class="activity">
+                    <!-- <div class="activity">
                       <div class="activity-icon bg-cve text-white shadow-primary">
                         <i class="fas fa-pen"></i>
                       </div>
@@ -244,13 +200,22 @@
                         <div class="mb-2">
                           <span class="text-job text-primary">10.Oct.2021</span>
                           <span class="bullet"></span>
+                          <span class="text-job" >Launch of the 2-bedroom</span>
                         </div>
                         <p>	
                           This magnificent custom-built executive 2bedroom apartment with superb finishing inside and out is suited for a new family seeking a place to call home.
                           
                           The Nest is a perfect invitation into a work of art. A small but majestic home which prides itself in plenty of space, meticulous attention to detail, and exotic designs</p>
+                          <div class="card">
+                            <div class="card-body">
+                              <div class="gallery gallery-md">
+                                <div class="gallery-item" data-image="{% static '/img/cve-new0002.webp' %}" data-title="Image 1"></div>
+                                <div class="gallery-item" data-image="{% static '/img/cve-new0001.webp' %}" data-title="Image 1"></div>
+                              </div>
+                            </div>
+                          </div>
                       </div>
-                    </div>
+                    </div> -->
                     <div class="activity">
                       <div class="activity-icon bg-cve text-white shadow-primary">
                         <i class="fas fa-pen"></i>
@@ -259,9 +224,21 @@
                         <div class="mb-2">
                           <span class="text-job text-primary">10.Oct.2021</span>
                           <span class="bullet"></span>
+                          <span class="text-job" >The Launch</span>
                         </div>
                         <p>	
                           The Citadel Views Estate is commissioned today at Sangotedo consisting of 175 apartments with a total of 525 rooms and 350 units of car parking space, all on 33,900 square meters of land.</p>
+                        <div class="card">
+                          <div class="card-body">
+                            <div class="gallery gallery-md">
+                              <div class="gallery-item" data-image="{% static '/img/CVE-0000.webp' %}" data-title="Image 1"></div>
+                              <div class="gallery-item" data-image="{% static '/img/CVE-0001.webp' %}" data-title="Image 1"></div>
+                              <div class="gallery-item" data-image="{% static '/img/CVE-0002.webp' %}" data-title="Image 3"></div>
+                              <div class="gallery-item" data-image="{% static '/img/CVE-0003.webp' %}" data-title="Image 4"></div>
+                              <div class="gallery-item" data-image="{% static '/img/CVE-0004.webp' %}" data-title="Image 9"></div>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
                     <div class="activity">
@@ -272,9 +249,9 @@
                         <div class="mb-2">
                           <span class="text-job text-primary">16.Aug.2021</span>
                           <span class="bullet"></span>
-                          <a class="text-job" href="#">View</a>
+                          <span class="text-job" >The Foundation</span>
                         </div>
-                        <p>Foundation is laid today. CVE is born.
+                        <p>Foundation is laid today. The Citadel View Estate is born!
                         </p>
                         <div class="card">
                           <div class="card-body">
@@ -293,6 +270,120 @@
                 </div>
               </div>
             </div>
+            <div class="col-lg-4 col-md-6 col-sm-6 col-12">
+              <h4 class="section-title" id="ConstructionProgress">My Property Update</h4>
+              <div class="card">
+                <div class="card-header">
+                  <h4>2 Bedroom Terrace Duplex</h4>
+                  <div class="card-header-action">
+                    <span title="Purchase price">&#8358;44.9M</span>
+                    <!-- <a href="#" class="btn btn-primary">View All</a>
+                    <br>&#8358;63M -->
+                  </div>
+                </div>
+                <div class="card-body">
+                  <div class="chocolat-parent">
+                    <a href="{% static '/img/CVE-002.webp' %}" title="Current stage of development" target="_blank">
+                      <div data-crop-image="">
+                        <img alt="your update" src="{% static '/img/CVE-002.webp' %}" class="img-fluid">
+                      </div>
+                    </a>
+                  </div>
+                  <div class="mt-2 mb-2 text-muted"><b>Est. date of completion: <br></b>20 December 2021 
+                  </div>
+                  <div class="mt-2 mb-2 text-muted">
+                    <b>Completion rate: </b>
+                    <div class="progress mt-2 mb-1">
+                      <div class="progress-bar bg-cve" role="progressbar" data-width="80%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100">80%</div>
+                    </div>
+                  </div>
+                  <div class="mt-2 mb-2 text-muted">
+                    <b>Amount left: </b>
+                    <div class="mt-0">
+                      <div class="budget-price">
+                        <div class="budget-price-square price-pry" data-width="80%"></div>
+                        <div class="budget-price-label">&#8358;12.5M</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mt-2 mb-2 text-muted">
+                    <ul class="list-group list-group-flush">
+                      <li class="list-group-item"><i class="fas fa-check text-primary"></i>&nbsp;Foundation</li>
+                      <li class="list-group-item"><i class="fas fa-check text-primary"></i>&nbsp;Wall plastering</li>
+                      <li class="list-group-item"><i class="fas fa-check text-primary"></i>&nbsp;Electrical mapping</li>
+                      <li class="list-group-item"><i class="fas fa-check text-primary"></i>&nbsp;Lintel</li>
+                      <li class="list-group-item"><i class="fas fa-check text-warning"></i>&nbsp;Roofing</li>
+                      <li class="list-group-item"><i class="fas fa-check text-warning"></i>&nbsp;Tiling</li>
+                      <li class="list-group-item"><i class="fas fa-check text-danger"></i>&nbsp;Painting</li>
+                      <li class="list-group-item"><i class="fas fa-check text-danger"></i>&nbsp;Furnishing</li>
+                    </ul>
+                  </div>
+                </div>
+                <!-- <div class="card-footer bg-whitesmoke"> -->
+                <div class="card-footer bg-whitesmoke pt-3 d-flex justify-content-center">
+                  <div class="budget-price justify-content-center">
+                    <div class="budget-price-square bg-cve" data-width="20"></div>
+                    <div class="budget-price-label">Completed</div>
+                  </div>
+                  <div class="budget-price justify-content-center">
+                    <div class="budget-price-square price-pry" data-width="20"></div>
+                    <div class="budget-price-label">Ongoing</div>
+                  </div>
+                  <div class="budget-price justify-content-center">
+                    <div class="budget-price-square bg-danger" data-width="20"></div>
+                    <div class="budget-price-label">Not started yet</div>
+                  </div>
+                </div>
+                <!-- </div> -->
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-8 col-md-6 col-sm-6 col-12">
+              <h4 class="section-title">Your property in view</h4>
+              <img class="d-block w-100" src="{% static '/img/u5.webp' %}" alt="Completed Sample" height="300">
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-6 col-12">
+              <h4 class="section-title"> Estate Update</h4>
+              <div class="card card-primary profile-widget" style="margin-top: 0px!important;">
+                <!-- <div class="profile-widget-header"> -->
+                  <div class="profile-widget-items">
+                    <div class="profile-widget-item">
+                      <div class="profile-widget-item-label">Units</div>
+                      <div class="profile-widget-item-value">175</div>
+                    </div>
+                    <div class="profile-widget-item">
+                      <div class="profile-widget-item-label">% Completed</div>
+                      <div class="profile-widget-item-value">60%</div>
+                    </div>
+                    <div class="profile-widget-item">
+                      <div class="profile-widget-item-label">Delivery Date</div>
+                      <div class="profile-widget-item-value">Apr 2022</div>
+                    </div>
+                  </div>
+                <!-- </div> -->
+                <div class="profile-widget-description">
+                  <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><i class="fas fa-check text-primary"></i>&nbsp;Solar power installation</li>
+                    <li class="list-group-item"><i class="fas fa-check text-primary"></i>&nbsp;Swimming pool</li>
+                    <li class="list-group-item"><i class="fas fa-check text-primary"></i>&nbsp;Football pitch</li>
+                    <li class="list-group-item"><i class="fas fa-check text-warning"></i>&nbsp;CCTV installation</li>
+                    <li class="list-group-item"><i class="fas fa-check text-warning"></i>&nbsp;Gym setup</li>
+                    <li class="list-group-item"><i class="fas fa-check text-warning"></i>&nbsp;Biogas renewable sewage system</li>
+                  </ul>
+                </div>
+                <div class="card-footer bg-whitesmoke pt-3 d-flex justify-content-center">
+                  <div class="budget-price justify-content-center">
+                    <div class="budget-price-square bg-cve" data-width="20"></div>
+                    <div class="budget-price-label">Completed</div>
+                  </div>
+                  <div class="budget-price justify-content-center">
+                    <div class="budget-price-square price-pry" data-width="20"></div>
+                    <div class="budget-price-label">Ongoing</div>
+                  </div>
+                </div>
+              </div>
+          </div>
           </div>
           <div class="row">
             <div class="col-lg-8">
@@ -322,14 +413,14 @@
                       </tr>
                       <tr>
                         <td>INV-48574</td>
-                        <td class="font-weight-600"><a href="#">CVE-002</a></td>
+                        <td class="font-weight-600"><a href="#">CVE-001</a></td>
                         <td>&#8358;12.5M</td>
                         <td>July 21, 2018</td>
                         <td>&#8358;12.5M</td>
                       </tr>
                       <tr>
                         <td>INV-76824</td>
-                        <td class="font-weight-600"><a href="#">CVE-003</a></td>
+                        <td class="font-weight-600"><a href="#">CVE-001</a></td>
                         <td>&#8358;110.5M</td>
                         <td>July 22, 2018</td>
                         <td>&#8358;12.5M
@@ -337,7 +428,7 @@
                       </tr>
                       <tr>
                         <td>INV-84990</td>
-                        <td class="font-weight-600"><a href="#">CVE-004</a></td>
+                        <td class="font-weight-600"><a href="#">CVE-001</a></td>
                         <td>&#8358;195M</td>
                         <td>July 22, 2018</td>
                         <td>&#8358;12.5M
@@ -345,7 +436,7 @@
                       </tr>
                       <tr>
                         <td>INV-87320</td>
-                        <td class="font-weight-600"><a href="#">CVE-005</a></td>
+                        <td class="font-weight-600"><a href="#">CVE-001</a></td>
                         <td>&#8358;32.5M</td>
                         <td>July 28, 2018</td>
                         <td>&#8358;12.5M
@@ -408,7 +499,7 @@
                         </div>
                       </div>
                     </li>
-                    <li class="media">
+                    <!-- <li class="media">
                       <div class="media-body">
                         <div class="float-right"><div class="font-weight-600 text-muted text-small">11-20-2021</div></div>
                         <div class="media-title"><a href="#">
@@ -441,7 +532,7 @@
                           </div>
                         </div>
                       </div>
-                    </li>
+                    </li> -->
                   </ul>
                 </div>
                 <div class="card-footer pt-3 d-flex justify-content-center">

@@ -19,6 +19,10 @@
 .price-pry{
     background-color: #DAA520 !important;
 }
+
+.bg-danger{
+    background-color:#ff0000 !important;
+}
 /* .btn-cve-pry{
     background-color: #DAA520 !important;
 } */
@@ -48,6 +52,7 @@
 .section .section-title:before{
     background-color: #DAA520;
 }
+
 
 /* .dash_head:hover{
     text-decoration: none;
