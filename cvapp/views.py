@@ -1,10 +1,9 @@
 import uuid
-from django.core import paginator
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import auth
 from django.contrib.auth.decorators import login_required
 # from django.contrib.auth import get_user_model as User
-from .models import HouseInfo, User
+from .models import HouseInfo, ProjectUpdate, User
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator
@@ -63,20 +62,6 @@ def allFeature(request):
         'page': 'Feature',
     }
     return render(request, "user/all-features.html", context)
-
-@login_required
-def addPUpdate(request):
-    context = {
-        'page': 'Add Update',
-    }
-    return render(request, "user/add-project-update.html", context)
-
-@login_required
-def allPUpdate(request):
-    context = {
-        'page': 'Project Update',
-    }
-    return render(request, "user/all-project-update.html", context)
 
 def forgotPass(request):
     return render(request, "auth/auth-forgot.html")
@@ -302,10 +287,10 @@ def allProp(request):
 
 @login_required
 def allStaff(request):
-    staffs = User.objects.filter(user_role="S")
+    staff = User.objects.filter(user_role="S")
     context = {
         'page': 'All Staff',
-        'owners': staffs,
+        'owners': staff,
     }
     return render(request, "user/all-staff.html", context)
 
@@ -325,3 +310,50 @@ def allOwner(request):
 def logout(request):
     auth.logout(request)
     return redirect("cvapp:login")
+
+##################
+#Project Update
+################
+
+@login_required
+def addPUpdate(request):
+    user1 = request.user
+    if request.method == 'POST':
+        try:
+            user = User.objects.get(id=user1.id)
+            description = request.POST.get('description')
+            img = request.FILES['feature_image']
+            date = request.POST.get('date')
+            print(request.POST)
+            # ProjectUpdate.objects
+            update = ProjectUpdate.objects.create(desription=description, update_images=img, update_date=date,added_by = user)
+            update.save()
+            # context = {
+            #     'success': 'Project update successfully added',
+            #     'page':'Add Update'
+            # }
+            messages.error(request, 'Project update successfully added')
+            return redirect("cvapp:addPUpdate")
+            # return render(request, "user/add-project-update.html", context)
+        except ObjectDoesNotExist:
+            messages.error(request, 'Unauthorised access')
+            return redirect("cvapp:logout")
+    context = {'page':'Add Update'}
+    return render(request, "user/add-project-update.html", context)
+
+@login_required
+def allPUpdate(request):
+    # context = {
+    #     'page': 'Project Update',
+    # }
+    # return render(request, "user/all-project-update.html", context)
+
+    p_updates = ProjectUpdate.objects.all()
+    paginator = Paginator(p_updates, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    context = {
+        'page': 'All Project Update',
+        'p_updates': page_obj,
+    }
+    return render(request, "user/all-project-update.html", context)
