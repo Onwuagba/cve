@@ -324,8 +324,6 @@ def addPUpdate(request):
             description = request.POST.get('description')
             img = request.FILES['feature_image']
             date = request.POST.get('date')
-            print(request.POST)
-            # ProjectUpdate.objects
             update = ProjectUpdate.objects.create(desription=description, update_images=img, update_date=date,added_by = user)
             update.save()
             # context = {
@@ -334,7 +332,6 @@ def addPUpdate(request):
             # }
             messages.error(request, 'Project update successfully added')
             return redirect("cvapp:addPUpdate")
-            # return render(request, "user/add-project-update.html", context)
         except ObjectDoesNotExist:
             messages.error(request, 'Unauthorised access')
             return redirect("cvapp:logout")
