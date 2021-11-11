@@ -311,6 +311,7 @@ def logout(request):
     auth.logout(request)
     return redirect("cvapp:login")
 
+@login_required
 def assignProp(request):
     user1 = request.user
     users = User.objects.all()
@@ -322,25 +323,34 @@ def assignProp(request):
     }
     if request.method == "POST":
         try:
+            
             user = User.objects.get(id=user1.id)
+            
             client = request.POST.get("client")
-            house = request.POST.get("house")
+            client = User.objects.filter(email=client)[0]
 
-            ownership = UserHouse()
-            ownership.user_id = User.objects.filter(email=client)[0]
-            ownership.home_id = HouseInfo.objects.filter(title=house)[0]
-            ownership.created_by = user
-            ownership.save()
-            context = {
+            house = request.POST.get("house")
+            house = HouseInfo.objects.filter(title=house)[0]
+
+            if UserHouse.objects.filter(user_id=client, home_id=house).exists():
+                messages.error(request, 'User already assigned to that house')
+                return render(request, "user/assign-property.html", context)
+            else:
+                ownership = UserHouse()
+                ownership.user_id = client
+                ownership.home_id = house
+                ownership.created_by = user
+                ownership.save()
+            
+                context = {
                     'success': 'House successfully created',
                     'page':'Assign Property',
                     'users': users,
                     'properties': properties
-                }
-            render(request, "user/assign-property.html", context)
+                    }
+                render(request, "user/assign-property.html", context)
 
-        except Exception as e:
-            print(e)
+        except ObjectDoesNotExist:
             messages.error(request, 'Unauthorised access')
     return render(request, "user/assign-property.html", context)
 
