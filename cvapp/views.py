@@ -311,6 +311,16 @@ def logout(request):
     auth.logout(request)
     return redirect("cvapp:login")
 
+def assignProp(request):
+    users = User.objects.all()
+    properties = HouseInfo.objects.all()
+    context = {
+        'page': "Assign Property",
+        'users': users,
+        'properties': properties
+    }
+    return render(request, "user/assign-property.html", context)
+
 ##################
 #Project Update
 ################
