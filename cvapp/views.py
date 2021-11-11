@@ -327,7 +327,7 @@ def assignProp(request):
             house = request.POST.get("house")
 
             ownership = UserHouse()
-            ownership.user_id = User.objects.filter(first_name=client)[0]
+            ownership.user_id = User.objects.filter(email=client)[0]
             ownership.home_id = HouseInfo.objects.filter(title=house)[0]
             ownership.created_by = user
             ownership.save()
