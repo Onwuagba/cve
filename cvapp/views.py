@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import auth
 from django.contrib.auth.decorators import login_required
 # from django.contrib.auth import get_user_model as User
-from .models import HouseInfo, ProjectUpdate, User
+from .models import HouseInfo, ProjectUpdate, User, UserHouse
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator
@@ -310,6 +310,39 @@ def allOwner(request):
 def logout(request):
     auth.logout(request)
     return redirect("cvapp:login")
+
+def assignProp(request):
+    user1 = request.user
+    users = User.objects.all()
+    properties = HouseInfo.objects.all()
+    context = {
+        'page': "Assign Property",
+        'users': users,
+        'properties': properties
+    }
+    if request.method == "POST":
+        try:
+            user = User.objects.get(id=user1.id)
+            client = request.POST.get("client")
+            house = request.POST.get("house")
+
+            ownership = UserHouse()
+            ownership.user_id = User.objects.filter(first_name=client)[0]
+            ownership.home_id = HouseInfo.objects.filter(title=house)[0]
+            ownership.created_by = user
+            ownership.save()
+            context = {
+                    'success': 'House successfully created',
+                    'page':'Assign Property',
+                    'users': users,
+                    'properties': properties
+                }
+            render(request, "user/assign-property.html", context)
+
+        except Exception as e:
+            print(e)
+            messages.error(request, 'Unauthorised access')
+    return render(request, "user/assign-property.html", context)
 
 ##################
 #Project Update

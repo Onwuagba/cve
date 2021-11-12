@@ -1,0 +1,117 @@
+{% extends 'user/base/base.html' %}
+
+{% block content %}
+{% load static %}
+
+      <!-- Main Content -->
+      <div class="main-content">
+        <section class="section">
+          <div class="section-header">
+            <div class="section-header-back">
+              <a href="{{ request.META.HTTP_REFERER }}" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
+            </div>
+            <h1>Assign Property</h1>
+            <div class="section-header-breadcrumb">
+              <div class="breadcrumb-item active"><a href="{% url 'cvapp:home' %}">Dashboard</a></div>
+              <div class="breadcrumb-item">Assign Property</div>
+            </div>
+          </div>
+
+          <div class="section-body">
+            <div class="row">
+              <div class="col-12">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="row mt-4">
+                      <div class="col-12 col-lg-8 offset-lg-2">
+                        <div class="wizard-steps">
+                          <div class="wizard-step wizard-step-active">
+                            <div class="wizard-step-icon">
+                              <i class="fas fa-home"></i>
+                            </div>
+                            <div class="wizard-step-label">
+                              Assign Property
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    {% if messages %}
+                      {% for message in messages %}
+                        <div class="alert alert-warning text-center" role="alert">
+                          <b>{{ message }}</b>
+                        </div>
+                      {% endfor %}
+                    {% elif success %}
+                      <div class="alert alert-success text-center" role="alert">
+                        {{ success }}
+                      </div>
+                    {% endif %}
+
+                    <form action="{% url 'cvapp:assignProp'%}" method="POST" class="wizard-content mt-2 needs-validation" novalidate="">
+                      {% csrf_token %}
+                      <div class="wizard-pane">
+                        <div class="form-group row align-items-center">
+                          <label class="col-md-4 text-md-right text-left" for="clients">client</label>
+                          <div class="col-lg-4 col-md-6">
+                            <select name="client" class="form-control">
+                              {% for user in users %}
+                              <option value="{{user.first_name}}">{{user.first_name}}</option>
+                              {% endfor %}
+                            </select>
+                            <div class="invalid-feedback">
+                              Please enter a title
+                            </div>
+                          </div>
+                        </div>
+                        <div class="form-group row align-items-center">
+                          <label class="col-md-4 text-md-right text-left" for="house">House</label>
+                          <div class="col-lg-4 col-md-6">
+                            <select name="house" class="form-control">
+                              {% for property in properties %}
+                              <option value="{{property.title}}">{{property.title}}</option>
+                              {% endfor %}
+                            </select>
+                            <div class="invalid-feedback">
+                              Please enter a title
+                            </div>
+                          </div>
+                        </div>
+                        <!-- <div class="form-group row">
+                          <label class="col-md-4 text-md-right text-left mt-2">Status</label>
+                          <div class="col-lg-4 col-md-6">
+                            <div class="selectgroup w-100">
+                              <label class="selectgroup-item">
+                                <input type="radio" name="value" value="sold" class="selectgroup-input">
+                                <span class="selectgroup-button">Sold</span>
+                              </label>
+                              <label class="selectgroup-item">
+                                <input type="radio" name="value" value="notSold" class="selectgroup-input">
+                                <span class="selectgroup-button">Not Sold</span>
+                              </label>
+                            </div>
+                          </div>
+                        </div> -->
+                        <div class="form-group row">
+                          <div class="col-md-4"></div>
+                          <div class="col-lg-4 col-md-6 text-right">
+                            <button type="submit" name="formSubmit" class="btn btn-icon icon-right btn-primary">
+                              Submit<i class="fas fa-arrow-right"></i>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+      {% endblock %}
+
+{% block page_js %} 
+  <!-- Page Specific JS File -->
+  <!-- <script src="{% static 'js/page/index.js' %}"></script> -->
+{% endblock %}
