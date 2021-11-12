@@ -3,7 +3,7 @@
 {% block content %}
 {% load static %}
 {% load humanize %}
-<!-- {% load aMill from convert %} -->
+{% load convert %}
 
       <!-- Main Content -->
       <div class="main-content">
@@ -23,7 +23,7 @@
             <p class="section-lead" >
               Manage properties here
             </p>
-            <div class="row">
+            <!-- <div class="row">
               <div class="col-12">
                 <div class="card mb-0">
                   <div class="card-body">
@@ -35,7 +35,7 @@
                   </div>
                 </div>
               </div>
-            </div>
+            </div> -->
             <div class="row mt-4">
               <div class="col-12">
                 <div class="card">
@@ -96,7 +96,7 @@
                               <a href="#" class="text-danger">Delete</a>
                             </div></td>
                           <td class="text-center">{{property.quantity }}</td>
-                          <td class="text-center">0</td>
+                          <td class="text-center">{{ assigned_to |get_item:property }}</td>
                           <td class="align-middle">
                           <div class="media-progressbar">
                             <div class="progress-text">{{property.progress}}%</div>

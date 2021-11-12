@@ -272,7 +272,22 @@ def addProp(request):
 # list all property
 @login_required
 def allProp(request):
-    properties = HouseInfo.objects.all()
+    properties = HouseInfo.objects.all().order_by('-title')
+    print(properties)
+
+    assigned_to = {}
+    for prop in properties:
+        assigned_to[prop] = UserHouse.objects.filter(home_id=prop).count()
+    print (assigned_to)
+
+
+    
+    print("=============")
+    print(assigned_to.get(prop))
+    print("=============")
+    # assigned_to = UserHouse.objects.filter(home_id=properties)
+    # print (assigned_to)
+        # assigned_to.append(UserHouse.objects.filter(home_id=prop).count())
 
     paginator = Paginator(properties, 10)
     page_number = request.GET.get('page')
@@ -281,13 +296,14 @@ def allProp(request):
     context = {
         'page': 'All Properties',
         'properties': page_obj,
+        'assigned_to': assigned_to
     }
 
     return render(request, "user/all-property.html", context)
 
 @login_required
 def allStaff(request):
-    staff = User.objects.filter(user_role="S")
+    staff = User.objects.filter(user_role="S").exclude(is_superuser=True).order_by
     context = {
         'page': 'All Staff',
         'owners': staff,
@@ -297,7 +313,7 @@ def allStaff(request):
 # list all owners
 @login_required
 def allOwner(request):
-    owners = User.objects.filter(user_role="H")
+    owners = User.objects.filter(user_role="H").exclude(is_superuser=True).order_by('-date_joined')
     paginator = Paginator(owners, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -311,10 +327,11 @@ def logout(request):
     auth.logout(request)
     return redirect("cvapp:login")
 
+@login_required
 def assignProp(request):
     user1 = request.user
-    users = User.objects.all()
-    properties = HouseInfo.objects.all()
+    users = User.objects.all().order_by('-id')
+    properties = HouseInfo.objects.all().order_by('-title')
     context = {
         'page': "Assign Property",
         'users': users,
@@ -322,25 +339,34 @@ def assignProp(request):
     }
     if request.method == "POST":
         try:
+            
             user = User.objects.get(id=user1.id)
+            
             client = request.POST.get("client")
-            house = request.POST.get("house")
+            client = User.objects.filter(email=client)[0]
 
-            ownership = UserHouse()
-            ownership.user_id = User.objects.filter(first_name=client)[0]
-            ownership.home_id = HouseInfo.objects.filter(title=house)[0]
-            ownership.created_by = user
-            ownership.save()
-            context = {
-                    'success': 'House successfully created',
+            house = request.POST.get("house")
+            house = HouseInfo.objects.filter(title=house)[0]
+
+            if UserHouse.objects.filter(user_id=client, home_id=house).exists():
+                messages.error(request, 'User already assigned to this house.')
+                return render(request, "user/assign-property.html", context)
+            else:
+                ownership = UserHouse()
+                ownership.user_id = client
+                ownership.home_id = house
+                ownership.created_by = user
+                ownership.save()
+            
+                context = {
+                    'success': 'House assigned successfully',
                     'page':'Assign Property',
                     'users': users,
                     'properties': properties
-                }
-            render(request, "user/assign-property.html", context)
+                    }
+                render(request, "user/assign-property.html", context)
 
-        except Exception as e:
-            print(e)
+        except ObjectDoesNotExist:
             messages.error(request, 'Unauthorised access')
     return render(request, "user/assign-property.html", context)
 
@@ -378,7 +404,7 @@ def allPUpdate(request):
     # }
     # return render(request, "user/all-project-update.html", context)
 
-    p_updates = ProjectUpdate.objects.all()
+    p_updates = ProjectUpdate.objects.all().order_by('-date_created')
     paginator = Paginator(p_updates, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
