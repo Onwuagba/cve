@@ -174,6 +174,7 @@ def addOwner(request):
     context = {'page':'Add Owner'}
     return render(request, "user/add-home-owner.html", context)
 
+@login_required
 def addStaff(request):
     user1 = request.user
     if request.method == 'POST':
@@ -384,17 +385,13 @@ def addPUpdate(request):
 
 @login_required
 def allPUpdate(request):
-    # context = {
-    #     'page': 'Project Update',
-    # }
-    # return render(request, "user/all-project-update.html", context)
 
     p_updates = ProjectUpdate.objects.all().order_by('-date_created')
     paginator = Paginator(p_updates, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     context = {
-        'page': 'All Project Update',
+        'page': 'Project Update',
         'p_updates': page_obj,
     }
     return render(request, "user/all-project-update.html", context)

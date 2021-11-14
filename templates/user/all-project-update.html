@@ -79,6 +79,10 @@
                           <td>{{ p_update.added_by }}</td>
                         </tr>
                         {% endfor %}
+                        {% else %}
+                        <tr>
+                          <td colspan="4" class="text-center"><b> No update added yet. Add <a href="{% url 'cvapp:addPUpdate' %}"> project update</a> now.</b></td>
+                        </tr>
                         {% endif %}
                       </table>
                     </div>
