@@ -72,9 +72,6 @@ def login(request):
     elif request.method == "POST":
         email = request.POST.get("email")
         password = request.POST.get("password")
-        # user = User().objects.filter(email=email).filter(password=password)
-        # print(f'after query is :{user}')
-        # print(f'email: {email}, password: {password}')
         user = auth.authenticate(email=email, password=password)
         if user:
             auth.login(request, user)
@@ -131,7 +128,6 @@ def resetPass(request, token):
 @login_required
 def addOwner(request):
     user1 = request.user
-    # print (user1)
     # if user1.user_role == 'S': #use permissions instead
     if request.method == 'POST':
         try:
@@ -167,7 +163,6 @@ def addOwner(request):
                 user.added_by = user1.first_name
                 # user.profile_photo = img
                 user.set_password(pass1)
-                # print(user)
                 user.save()
                 success_note = {
                     'passa':pass1,
@@ -178,13 +173,9 @@ def addOwner(request):
             messages.error(request, 'Unauthorised access')
     context = {'page':'Add Owner'}
     return render(request, "user/add-home-owner.html", context)
-    # else:
-    #     messages.error(request, 'Unauthorised access')
-    #     return redirect("cvapp:logout")
 
 def addStaff(request):
     user1 = request.user
-    # print (User.objects.get(id=user1.user_role))
     if request.method == 'POST':
         try:
             user = User.objects.get(id=user1.id)
@@ -218,7 +209,6 @@ def addStaff(request):
                 user.user_role = "S"
                 # user.profile_photo = img
                 user.set_password(pass1)
-                # print(user)
                 user.save()
                 success_note = {
                     'passa':pass1,
@@ -269,25 +259,17 @@ def addProp(request):
     context = {'page':'Add Property'}
     return render(request, "user/add-property.html", context)
 
+# Get count for properties assigned
+def counter(oo_query):
+    assigned_to = {}
+    for prop in oo_query:
+        assigned_to[prop] = UserHouse.objects.filter(home_id=prop).count()
+    return assigned_to
+
 # list all property
 @login_required
 def allProp(request):
     properties = HouseInfo.objects.all().order_by('-title')
-    print(properties)
-
-    assigned_to = {}
-    for prop in properties:
-        assigned_to[prop] = UserHouse.objects.filter(home_id=prop).count()
-    print (assigned_to)
-
-
-    
-    print("=============")
-    print(assigned_to.get(prop))
-    print("=============")
-    # assigned_to = UserHouse.objects.filter(home_id=properties)
-    # print (assigned_to)
-        # assigned_to.append(UserHouse.objects.filter(home_id=prop).count())
 
     paginator = Paginator(properties, 10)
     page_number = request.GET.get('page')
@@ -296,7 +278,7 @@ def allProp(request):
     context = {
         'page': 'All Properties',
         'properties': page_obj,
-        'assigned_to': assigned_to
+        'assigned_to': counter(properties)
     }
 
     return render(request, "user/all-property.html", context)
@@ -332,10 +314,13 @@ def assignProp(request):
     user1 = request.user
     users = User.objects.all().order_by('-id')
     properties = HouseInfo.objects.all().order_by('-title')
+    counter_value = counter(properties)
+
     context = {
         'page': "Assign Property",
         'users': users,
-        'properties': properties
+        'properties': properties,
+        'counter': counter_value
     }
     if request.method == "POST":
         try:

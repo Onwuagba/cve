@@ -2,6 +2,7 @@
 
 {% block content %}
 {% load static %}
+{% load convert %}
 
       <!-- Main Content -->
       <div class="main-content">
@@ -69,7 +70,12 @@
                           <div class="col-lg-4 col-md-6">
                             <select name="house" class="form-control">
                               {% for property in properties %}
+                              {% with count=counter|get_item:property qty=property.quantity %}
+                              <!-- issue with the if statement -->
+                              {% if qty < count %}
                               <option value="{{property.title}}">{{property.title}}</option>
+                              {% endif %}
+                              {% endwith %}
                               {% endfor %}
                             </select>
                             <div class="invalid-feedback">
