@@ -313,7 +313,7 @@ def logout(request):
 @login_required
 def assignProp(request):
     user1 = request.user
-    users = User.objects.all().order_by('-id')
+    users = User.objects.all().exclude(is_superuser=True).order_by('-id')
     properties = HouseInfo.objects.all().order_by('-title')
     counter_value = counter(properties)
 
@@ -323,7 +323,9 @@ def assignProp(request):
         'properties': properties,
         'counter': counter_value
     }
-    if request.method == "POST":
+    if (not users) or (not properties):
+        messages.error(request, 'No user/property added at the moment. Go back and add a user/property')
+    elif request.method == "POST":
         try:
             
             user = User.objects.get(id=user1.id)
