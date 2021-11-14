@@ -30,13 +30,13 @@
                           <b>{{ message }}</b>
                         </div>
                       {% endfor %}
-                    {% elif passa %}
+                    {% elif success %}
                       <div class="alert alert-success text-center" role="alert">
-                        <b>{{ passa }}</b>
+                        <b>{{ success }}</b>
                       </div>
                     {% endif %}
                     
-                    <form action="{% url 'cvapp:addFeature' %}" method="POST" class="wizard-content mt-2 needs-validation" novalidate="" enctype="multipart/form-data">
+                    <form action="{% url 'cvapp:addPUpdate' %}" method="POST" class="wizard-content mt-2 needs-validation" novalidate="" enctype="multipart/form-data">
                       {% csrf_token %}
                       <div class="wizard-pane">
                         <div class="form-group row align-items-center">
@@ -48,10 +48,20 @@
                             </div>
                           </div>
                         </div>
+                        
+                        <div class="form-group row align-items-center">
+                          <label class="col-md-4 text-md-right text-left">Update Date</label>
+                          <div class="col-lg-4 col-md-6">
+                            <input type="date" name="date" class="form-control" required>
+                            <div class="invalid-feedback">
+                              Please enter a proper date
+                            </div>
+                          </div>
+                        </div>
                         <div class="form-group row">
                           <label class="col-md-4 text-md-right text-left mt-2">Upload Image(s)</label>
                           <div class="col-sm-12 col-md-7">
-                              <input type="file" name="feature_image" accept="image/*" multiple required/>
+                              <input type="file" name="feature_image" accept="image/*" multiple/>
                               <div class="invalid-feedback">
                                 No image selected
                               </div>

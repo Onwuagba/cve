@@ -54,14 +54,15 @@
                               <div class="gallery-item" data-image="{% static '/img/CVE-006.webp' %}" data-title="Image 2"></div>
                               <div class="gallery-item" data-image="{% static '/img/CVE-004.webp' %}" data-title="Image 3"></div>
                               <div class="gallery-item" data-image="{% static '/img/CVE-007.webp' %}" data-title="Image 4"></div>
-                              <div class="gallery-item gallery-hide" data-image="../assets/img/news/img01.webp" data-title="Image 9"></div>
                             </div>
                           </td>
                           <td class="font-weight-600">10.Oct.2021</td>
                           <td>Bola</td>
                         </tr>
+                        {% if p_updates %}
+                        {% for p_update in p_updates %}
                         <tr>
-                          <td>The Citadel Views Estate is commissioned today at Sangotedo consisting of 175 apartments with a total of 525 rooms and 350 units of car parking space, all on 33,900 square meters of land.
+                          <td>{{ p_update.desription }}
                             <div class="table-links">
                               <a href="#">Edit</a>
                               <div class="bullet"></div>
@@ -69,39 +70,64 @@
                             </div>
                           </td>
                           <td>
+                            <!-- <img src="{{p_update.update_images.url}}" alt="Smiley face" width="250" height="250"> -->
                             <div class="gallery">
-                              <div class="gallery-item" data-image="{% static '/img/CVE-008.webp' %}" data-title="Image 1"></div>
-                              <div class="gallery-item" data-image="{% static '/img/CVE-006.webp' %}" data-title="Image 2"></div>
-                              <div class="gallery-item" data-image="{% static '/img/CVE-004.webp' %}" data-title="Image 3"></div>
-                              <div class="gallery-item" data-image="{% static '/img/CVE-007.webp' %}" data-title="Image 4"></div>
-                              <div class="gallery-item gallery-hide" data-image="../assets/img/news/img01.webp" data-title="Image 9"></div>
+                              <div class="gallery-item" data-image="{{ p_update.update_images.url }}" data-title="Update image {{ p_update.id }}"></div>
                             </div>
                           </td>
-                          <td class="font-weight-600">10.Oct.2021</td>
-                          <td>Bola</td>
+                          <td class="font-weight-600">{{ p_update.update_date }}</td>
+                          <td>{{ p_update.added_by }}</td>
                         </tr>
-                        <tr>
-                          <td>The Citadel Views Estate is commissioned today at Sangotedo consisting of 175 apartments with a total of 525 rooms and 350 units of car parking space, all on 33,900 square meters of land.
-                            <div class="table-links">
-                              <a href="#">Edit</a>
-                              <div class="bullet"></div>
-                              <a href="#" class="text-danger">Delete</a>
-                            </div>
-                          </td>
-                          <td>
-                            <div class="gallery">
-                              <div class="gallery-item" data-image="{% static '/img/CVE-008.webp' %}" data-title="Image 1"></div>
-                              <div class="gallery-item" data-image="{% static '/img/CVE-006.webp' %}" data-title="Image 2"></div>
-                              <div class="gallery-item" data-image="{% static '/img/CVE-004.webp' %}" data-title="Image 3"></div>
-                              <div class="gallery-item" data-image="{% static '/img/CVE-007.webp' %}" data-title="Image 4"></div>
-                              <div class="gallery-item gallery-hide" data-image="../assets/img/news/img01.webp" data-title="Image 9"></div>
-                            </div>
-                          </td>
-                          <td class="font-weight-600">10.Oct.2021</td>
-                          <td>Bola</td>
-                        </tr>
+                        {% endfor %}
+                        {% endif %}
                       </table>
-                    </div><hr>
+                    </div>
+                    <hr>
+                    {% if p_updates.has_other_pages %}
+                    <div class="float-right">
+                      <nav>
+                        <ul class="pagination">
+                          {% if p_updates.has_previous %}
+                          <li class="page-item">
+                            <a class="page-link" href="?page={{ owners.previous_page_number }}" aria-label="Previous">
+                              <span aria-hidden="true">&laquo;</span>
+                              <span class="sr-only">Previous</span>
+                            </a>
+                          </li>
+                          {% else %}
+                          <li class="page-item">
+                              <span aria-hidden="true">&laquo;</span>
+                              <span class="sr-only">Previous</span>
+                          </li>
+                          {% endif %}
+                          {% for i in p_updates.paginator.page_range %}
+                            {% if p_updates.number == i %}
+                              <li class="page-item active">
+                                <a class="page-link" href="#">{{ i }}</a>
+                              </li>
+                            {% else %}
+                              <li class="page-item">
+                                <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+                              </li>
+                            {% endif %}
+                          {% endfor %}
+                          {% if page_obj.has_next %}
+                            <li class="page-item">
+                              <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                                <span class="sr-only">Next</span>
+                              </a>
+                            </li>
+                          {% else %}
+                            <li class="page-item">
+                                <span aria-hidden="true">&raquo;</span>
+                                <span class="sr-only">Next</span>
+                            </li>
+                          {% endif %}
+                        </ul>
+                      </nav>
+                    </div>
+                    {% endif %}
                   </div>
                 </div>
               </div>

@@ -47,8 +47,9 @@ class User(AbstractUser):
     is_staff = models.BooleanField(default=False) 
     is_admin = models.BooleanField(default=False)
     regToken = models.UUIDField(default=uuid.uuid4, editable=False, unique=True, verbose_name='token') ##for new registrations
-    # profile_photo = models.ImageField(upload_to='img/profilePhoto/', verbose_name="profile photo", blank=True, null=True, unique=True)
+    # profile_photo = models.ImageField(upload_to='profilePhoto/', verbose_name="profile photo", blank=True, null=True, unique=True)
     date_updated = models.DateTimeField(auto_now=True)
+    added_by = models.CharField(max_length=150, null=False, blank=False, unique=False) #change once db is rearranged
     USER_ROLE = [
         ('S', 'Staff'), 
         ('H', 'Home Owner'),
@@ -65,11 +66,13 @@ class User(AbstractUser):
 
 class HouseInfo(models.Model):
     house_id = models.AutoField(primary_key=True, verbose_name='House ID')
-    street_info = models.CharField(max_length=80, unique=True)
+    title = models.CharField(max_length=80, unique=True)
+    progress = models.IntegerField(null=False, blank=False)
+    quantity = models.IntegerField(null=False, blank=False)
     cost = models.DecimalField(max_digits=15, decimal_places=2)
     desription = models.TextField(null=False, blank=False)
-    images = ArrayField(models.ImageField(upload_to='img/housePhotos/', unique=True), blank=False)
-    created_by = models.ForeignKey(User, on_delete=models.CASCADE)
+    images = models.ImageField(upload_to='housePhotos/', unique=True)
+    created_by = models.ForeignKey(User, related_name='staff_add', on_delete=models.CASCADE)
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
     deleted = models.BooleanField(default=False)
@@ -104,7 +107,7 @@ class Payment(models.Model):
     user_id = models.ForeignKey(User, related_name='homePay_owner', on_delete=models.CASCADE)
     home_id = models.ForeignKey(HouseInfo, related_name='housePay_info', on_delete=models.CASCADE)
     amount_paid = models.DecimalField(max_digits=15, decimal_places=2)
-    payment_proof = models.ImageField(upload_to='img/paymentProof/', verbose_name="proof of payment", unique=True)
+    payment_proof = models.ImageField(upload_to='paymentProof/', verbose_name="proof of payment", unique=True)
     STATUS = [
         ('D', 'Declined'), 
         ('P', 'Pending'), 
@@ -126,7 +129,7 @@ class Payment(models.Model):
 
 class Feature(models.Model):
     feature_title = models.CharField(max_length=150, null=False, blank=False, verbose_name='feature_title')
-    feature_image = models.ImageField(upload_to='img/featurePosts/', unique=True)
+    feature_image = models.ImageField(upload_to='featurePosts/', unique=True)
     feature_link = models.URLField(max_length=200)
     added_by = models.ForeignKey(User, related_name='staff', on_delete=models.CASCADE)
     date_created = models.DateTimeField(auto_now_add=True)
@@ -141,7 +144,7 @@ class Feature(models.Model):
         return f"{self.id}"
 
 class ProjectUpdate(models.Model):
-    update_images = ArrayField(models.ImageField(upload_to='img/ProjectUpdate/', unique=True), blank=True, null=True)
+    update_images = models.ImageField(upload_to='project_updates/', unique=True, blank=True, null=True)
     desription = models.TextField(null=False, blank=False)
     added_by = models.ForeignKey(User, related_name='staff_update', on_delete=models.CASCADE)
     date_created = models.DateTimeField(auto_now_add=True)
@@ -161,7 +164,7 @@ class ProjectUpdate(models.Model):
 
 # class Document(models.Model):
 #     doc_name = models.CharField(max_length=150, null=False, blank=False, verbose_name='doc_name')
-#     feature_image = models.ImageField(upload_to='img/Documents/', unique=True)
+#     feature_image = models.ImageField(upload_to='Documents/', unique=True)
 #     feature_link = models.URLField(max_length=200)
 #     added_by = models.ForeignKey(User, related_name='staff_doc', on_delete=models.CASCADE)
 #     STATUS = [

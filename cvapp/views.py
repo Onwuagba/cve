@@ -3,9 +3,10 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import auth
 from django.contrib.auth.decorators import login_required
 # from django.contrib.auth import get_user_model as User
-from .models import User
+from .models import HouseInfo, ProjectUpdate, User, UserHouse
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.paginator import Paginator
 from django.contrib.auth.hashers import check_password
 
 # Create your views here.
@@ -62,20 +63,6 @@ def allFeature(request):
     }
     return render(request, "user/all-features.html", context)
 
-@login_required
-def addPUpdate(request):
-    context = {
-        'page': 'Add Update',
-    }
-    return render(request, "user/add-project-update.html", context)
-
-@login_required
-def allPUpdate(request):
-    context = {
-        'page': 'Project Update',
-    }
-    return render(request, "user/all-project-update.html", context)
-
 def forgotPass(request):
     return render(request, "auth/auth-forgot.html")
 
@@ -85,9 +72,6 @@ def login(request):
     elif request.method == "POST":
         email = request.POST.get("email")
         password = request.POST.get("password")
-        # user = User().objects.filter(email=email).filter(password=password)
-        # print(f'after query is :{user}')
-        # print(f'email: {email}, password: {password}')
         user = auth.authenticate(email=email, password=password)
         if user:
             auth.login(request, user)
@@ -144,7 +128,6 @@ def resetPass(request, token):
 @login_required
 def addOwner(request):
     user1 = request.user
-    # print (user1)
     # if user1.user_role == 'S': #use permissions instead
     if request.method == 'POST':
         try:
@@ -177,9 +160,9 @@ def addOwner(request):
                 user.phone_number = phone_number
                 user.default_pwd = True
                 user.user_role = "H"
+                user.added_by = user1.first_name
                 # user.profile_photo = img
                 user.set_password(pass1)
-                # print(user)
                 user.save()
                 success_note = {
                     'passa':pass1,
@@ -190,73 +173,228 @@ def addOwner(request):
             messages.error(request, 'Unauthorised access')
     context = {'page':'Add Owner'}
     return render(request, "user/add-home-owner.html", context)
-    # else:
-    #     messages.error(request, 'Unauthorised access')
-    #     return redirect("cvapp:logout")
 
-@login_required
-def addProp(request):
+def addStaff(request):
     user1 = request.user
-    # print (User.objects.get(id=user1.user_role))
     if request.method == 'POST':
         try:
             user = User.objects.get(id=user1.id)
             first_name = request.POST.get('firstname')
             last_name = request.POST.get('lastname')
             email = request.POST.get('email')
-            phonenumber = request.POST.get('phoneNumber')
+            phone_number = request.POST.get('phoneNumber')
             pass1 = request.POST.get('password')
-            img = request.POST.get('image')
+            # img = request.POST.get('image')
+            context = {
+                'passa':pass1,
+                'first_name':first_name,
+                'last_name':last_name,
+                'email':email,
+                'phone_number':phone_number,
+                # 'img':img,
+                'page':'Add Staff'
+            }
             if User.objects.filter(email=email).exists():
-                messages.info(request, 'Email already exists.')
-            elif User.objects.filter(phone_number=phonenumber).exists():
-                messages.info(request, 'Phone number already exists.')
+                messages.error(request, 'Email already exists.')
+                return render(request, "user/add-home-owner.html", context)
+            elif User.objects.filter(phone_number=phone_number).exists():
+                messages.error(request, 'Phone number already exists.')
+                return render(request, "user/add-home-owner.html", context)
             else:
                 user = User(email=email)
                 user.first_name = first_name
                 user.last_name = last_name
-                user.phone_number = phonenumber
+                user.phone_number = phone_number
                 user.default_pwd = True
-                user.profile_photo = img
+                user.user_role = "S"
+                # user.profile_photo = img
                 user.set_password(pass1)
-                # print(user)
                 user.save()
-                context = {
+                success_note = {
                     'passa':pass1,
+                    'page':'Add Staff'
+                }
+                return render(request, "user/add-staff.html", success_note)
+        except ObjectDoesNotExist:
+            messages.error(request, 'Unauthorised access')
+    context = {'page':'Add Staff'}
+    return render(request, "user/add-staff.html", context)
+
+@login_required
+def addProp(request):
+    user1 = request.user
+    if request.method == 'POST':
+        try:
+            user = User.objects.get(id=user1.id)
+            # house_id = request.POST.get('houseID')
+            title = request.POST.get('title')
+            quantity = request.POST.get('quantity')
+            progress = request.POST.get('progress')
+            cost = request.POST.get('cost')
+            description = request.POST.get('description')
+            img = request.POST.get('image')
+            context = {
+                'title':title,
+                'quantity':quantity,
+                'progress':progress,
+                'cost':cost,
+                # 'img':img,
+                'page':'Add Property'
+            }
+            if HouseInfo.objects.filter(title=title).exists():
+                messages.info(request, 'Property title already exists')
+                return render(request, "user/add-property.html", context)
+            else:
+                house = HouseInfo(title=title, progress=progress, quantity=quantity, cost=cost, desription=description, images=img)
+                house.created_by = user
+                house.save()
+                context = {
+                    'success': 'House successfully created',
                     'page':'Add Property'
                 }
-                # messages.success(request, "User successfully added")
                 return render(request, "user/add-property.html", context)
         except ObjectDoesNotExist:
             messages.error(request, 'Unauthorised access')
-    
+            return redirect("cvapp:logout")
     context = {'page':'Add Property'}
     return render(request, "user/add-property.html", context)
+
+# Get count for properties assigned
+def counter(oo_query):
+    assigned_to = {}
+    for prop in oo_query:
+        assigned_to[prop] = UserHouse.objects.filter(home_id=prop).count()
+    return assigned_to
 
 # list all property
 @login_required
 def allProp(request):
+    properties = HouseInfo.objects.all().order_by('-title')
+
+    paginator = Paginator(properties, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     context = {
-        'page': 'Properties',
+        'page': 'All Properties',
+        'properties': page_obj,
+        'assigned_to': counter(properties)
     }
+
     return render(request, "user/all-property.html", context)
+
+@login_required
+def allStaff(request):
+    staff = User.objects.filter(user_role="S").exclude(is_superuser=True).order_by
+    context = {
+        'page': 'All Staff',
+        'owners': staff,
+    }
+    return render(request, "user/all-staff.html", context)
 
 # list all owners
 @login_required
 def allOwner(request):
+    owners = User.objects.filter(user_role="H").exclude(is_superuser=True).order_by('-date_joined')
+    paginator = Paginator(owners, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
     context = {
-        'page': 'Home Owners',
+        'page': 'All Owners',
+        'owners': page_obj,
     }
     return render(request, "user/all-owners.html", context)
-
-# @login_required
-# def addProp(request):
-#     return render(request, "user/add-property.html")
-
-# @login_required
-# def addOwner(request):
-#     return render(request, "user/add-home-owner.html")
 
 def logout(request):
     auth.logout(request)
     return redirect("cvapp:login")
+
+@login_required
+def assignProp(request):
+    user1 = request.user
+    users = User.objects.all().order_by('-id')
+    properties = HouseInfo.objects.all().order_by('-title')
+    counter_value = counter(properties)
+
+    context = {
+        'page': "Assign Property",
+        'users': users,
+        'properties': properties,
+        'counter': counter_value
+    }
+    if request.method == "POST":
+        try:
+            
+            user = User.objects.get(id=user1.id)
+            
+            client = request.POST.get("client")
+            client = User.objects.filter(email=client)[0]
+
+            house = request.POST.get("house")
+            house = HouseInfo.objects.filter(title=house)[0]
+
+            if UserHouse.objects.filter(user_id=client, home_id=house).exists():
+                messages.error(request, 'User already assigned to this house.')
+                return render(request, "user/assign-property.html", context)
+            else:
+                ownership = UserHouse()
+                ownership.user_id = client
+                ownership.home_id = house
+                ownership.created_by = user
+                ownership.save()
+            
+                context = {
+                    'success': 'House assigned successfully',
+                    'page':'Assign Property',
+                    'users': users,
+                    'properties': properties
+                    }
+                render(request, "user/assign-property.html", context)
+
+        except ObjectDoesNotExist:
+            messages.error(request, 'Unauthorised access')
+    return render(request, "user/assign-property.html", context)
+
+##################
+#Project Update
+################
+
+@login_required
+def addPUpdate(request):
+    user1 = request.user
+    if request.method == 'POST':
+        try:
+            user = User.objects.get(id=user1.id)
+            description = request.POST.get('description')
+            img = request.FILES['feature_image']
+            date = request.POST.get('date')
+            update = ProjectUpdate.objects.create(desription=description, update_images=img, update_date=date,added_by = user)
+            update.save()
+            # context = {
+            #     'success': 'Project update successfully added',
+            #     'page':'Add Update'
+            # }
+            messages.error(request, 'Project update successfully added')
+            return redirect("cvapp:addPUpdate")
+        except ObjectDoesNotExist:
+            messages.error(request, 'Unauthorised access')
+            return redirect("cvapp:logout")
+    context = {'page':'Add Update'}
+    return render(request, "user/add-project-update.html", context)
+
+@login_required
+def allPUpdate(request):
+    # context = {
+    #     'page': 'Project Update',
+    # }
+    # return render(request, "user/all-project-update.html", context)
+
+    p_updates = ProjectUpdate.objects.all().order_by('-date_created')
+    paginator = Paginator(p_updates, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    context = {
+        'page': 'All Project Update',
+        'p_updates': page_obj,
+    }
+    return render(request, "user/all-project-update.html", context)

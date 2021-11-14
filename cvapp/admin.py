@@ -1,6 +1,6 @@
 from django.contrib import admin
 # from django.contrib.postgres import fields
-from .models import HouseInfo, Payment, User, UserHouse
+from .models import HouseInfo, Payment, User, UserHouse, ProjectUpdate, Feature
 
 # Register your models here.
 
@@ -16,3 +16,5 @@ class CustomerAdmin(admin.ModelAdmin):
 admin.site.register (HouseInfo)
 admin.site.register (UserHouse)
 admin.site.register (Payment)
+admin.site.register (ProjectUpdate)
+admin.site.register (Feature)
