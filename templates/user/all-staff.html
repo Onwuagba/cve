@@ -104,6 +104,10 @@
                           <td><a href="#" class="btn btn-cve">More...</a></td>
                         </tr>
                         {% endfor %}
+                        {% else %}
+                        <tr>
+                          <td colspan="7" class="text-center"><b> No staff added yet. Add <a href="{% url 'cvapp:addStaff' %}"> staff</a> now.</b></td>
+                        </tr>
                         {% endif %}
                         
             
