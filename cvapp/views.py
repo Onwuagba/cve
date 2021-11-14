@@ -8,6 +8,7 @@ from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator
 from django.contrib.auth.hashers import check_password
+from cvapp.decorators import confirm_staff
 
 # Create your views here.
 
@@ -126,6 +127,7 @@ def resetPass(request, token):
     return render(request, "auth/auth-reset-pass.html")
 
 @login_required
+@confirm_staff
 def addOwner(request):
     user1 = request.user
     # if user1.user_role == 'S': #use permissions instead
@@ -313,7 +315,7 @@ def logout(request):
 @login_required
 def assignProp(request):
     user1 = request.user
-    users = User.objects.all().exclude(is_superuser=True).order_by('-id')
+    users = User.objects.all().exclude(user_role="S").order_by('-id')
     properties = HouseInfo.objects.all().order_by('-title')
     counter_value = counter(properties)
 
