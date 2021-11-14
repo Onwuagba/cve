@@ -51,6 +51,7 @@ def newPayment(request):
     return render(request, "cve_user/new_payment.html", context)
 
 @login_required
+@confirm_staff
 def addFeature(request):
     context = {
         'page': 'Add Feature',
@@ -58,6 +59,7 @@ def addFeature(request):
     return render(request, "user/add-feature.html", context)
 
 @login_required
+@confirm_staff
 def allFeature(request):
     context = {
         'page': 'Feature',
@@ -177,6 +179,7 @@ def addOwner(request):
     return render(request, "user/add-home-owner.html", context)
 
 @login_required
+@confirm_staff
 def addStaff(request):
     user1 = request.user
     if request.method == 'POST':
@@ -224,6 +227,7 @@ def addStaff(request):
     return render(request, "user/add-staff.html", context)
 
 @login_required
+@confirm_staff
 def addProp(request):
     user1 = request.user
     if request.method == 'POST':
@@ -271,6 +275,7 @@ def counter(oo_query):
 
 # list all property
 @login_required
+@confirm_staff
 def allProp(request):
     properties = HouseInfo.objects.all().order_by('-title')
 
@@ -287,6 +292,7 @@ def allProp(request):
     return render(request, "user/all-property.html", context)
 
 @login_required
+@confirm_staff
 def allStaff(request):
     staff = User.objects.filter(user_role="S").exclude(is_superuser=True).order_by
     context = {
@@ -297,6 +303,7 @@ def allStaff(request):
 
 # list all owners
 @login_required
+@confirm_staff
 def allOwner(request):
     owners = User.objects.filter(user_role="H").exclude(is_superuser=True).order_by('-date_joined')
     paginator = Paginator(owners, 10)
@@ -313,6 +320,7 @@ def logout(request):
     return redirect("cvapp:login")
 
 @login_required
+@confirm_staff
 def assignProp(request):
     user1 = request.user
     users = User.objects.all().exclude(user_role="S").order_by('-id')
@@ -365,6 +373,7 @@ def assignProp(request):
 ################
 
 @login_required
+@confirm_staff
 def addPUpdate(request):
     user1 = request.user
     if request.method == 'POST':
@@ -388,6 +397,7 @@ def addPUpdate(request):
     return render(request, "user/add-project-update.html", context)
 
 @login_required
+@confirm_staff
 def allPUpdate(request):
 
     p_updates = ProjectUpdate.objects.all().order_by('-date_created')

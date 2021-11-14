@@ -1,6 +1,6 @@
 from django.contrib import messages
 from django.http import HttpResponse
-from django.shortcuts import redirect, resolve_url
+from django.shortcuts import redirect
 
 def confirm_staff(view_func):
     def wrapper(request, *args, **kwargs):
