@@ -8,6 +8,7 @@ from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator
 from django.contrib.auth.hashers import check_password
+from cvapp.decorators import confirm_staff
 
 # Create your views here.
 
@@ -50,6 +51,7 @@ def newPayment(request):
     return render(request, "cve_user/new_payment.html", context)
 
 @login_required
+@confirm_staff
 def addFeature(request):
     context = {
         'page': 'Add Feature',
@@ -57,6 +59,7 @@ def addFeature(request):
     return render(request, "user/add-feature.html", context)
 
 @login_required
+@confirm_staff
 def allFeature(request):
     context = {
         'page': 'Feature',
@@ -126,6 +129,7 @@ def resetPass(request, token):
     return render(request, "auth/auth-reset-pass.html")
 
 @login_required
+@confirm_staff
 def addOwner(request):
     user1 = request.user
     # if user1.user_role == 'S': #use permissions instead
@@ -174,6 +178,8 @@ def addOwner(request):
     context = {'page':'Add Owner'}
     return render(request, "user/add-home-owner.html", context)
 
+@login_required
+@confirm_staff
 def addStaff(request):
     user1 = request.user
     if request.method == 'POST':
@@ -221,6 +227,7 @@ def addStaff(request):
     return render(request, "user/add-staff.html", context)
 
 @login_required
+@confirm_staff
 def addProp(request):
     user1 = request.user
     if request.method == 'POST':
@@ -268,6 +275,7 @@ def counter(oo_query):
 
 # list all property
 @login_required
+@confirm_staff
 def allProp(request):
     properties = HouseInfo.objects.all().order_by('-title')
 
@@ -284,6 +292,7 @@ def allProp(request):
     return render(request, "user/all-property.html", context)
 
 @login_required
+@confirm_staff
 def allStaff(request):
     staff = User.objects.filter(user_role="S").exclude(is_superuser=True).order_by
     context = {
@@ -294,6 +303,7 @@ def allStaff(request):
 
 # list all owners
 @login_required
+@confirm_staff
 def allOwner(request):
     owners = User.objects.filter(user_role="H").exclude(is_superuser=True).order_by('-date_joined')
     paginator = Paginator(owners, 10)
@@ -310,9 +320,10 @@ def logout(request):
     return redirect("cvapp:login")
 
 @login_required
+@confirm_staff
 def assignProp(request):
     user1 = request.user
-    users = User.objects.all().order_by('-id')
+    users = User.objects.filter(user_role="S").exclude(is_superuser=True).order_by('-id')
     properties = HouseInfo.objects.all().order_by('-title')
     counter_value = counter(properties)
 
@@ -322,7 +333,9 @@ def assignProp(request):
         'properties': properties,
         'counter': counter_value
     }
-    if request.method == "POST":
+    if (not users) or (not properties):
+        messages.error(request, 'No user/property added at the moment. Go back and add a user/property')
+    elif request.method == "POST":
         try:
             
             user = User.objects.get(id=user1.id)
@@ -360,6 +373,7 @@ def assignProp(request):
 ################
 
 @login_required
+@confirm_staff
 def addPUpdate(request):
     user1 = request.user
     if request.method == 'POST':
@@ -383,18 +397,15 @@ def addPUpdate(request):
     return render(request, "user/add-project-update.html", context)
 
 @login_required
+@confirm_staff
 def allPUpdate(request):
-    # context = {
-    #     'page': 'Project Update',
-    # }
-    # return render(request, "user/all-project-update.html", context)
 
     p_updates = ProjectUpdate.objects.all().order_by('-date_created')
     paginator = Paginator(p_updates, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     context = {
-        'page': 'All Project Update',
+        'page': 'Project Update',
         'p_updates': page_obj,
     }
     return render(request, "user/all-project-update.html", context)

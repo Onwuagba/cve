@@ -53,7 +53,7 @@
                       {% csrf_token %}
                       <div class="wizard-pane">
                         <div class="form-group row align-items-center">
-                          <label class="col-md-4 text-md-right text-left" for="clients">client</label>
+                          <label class="col-md-4 text-md-right text-left" for="clients">Client</label>
                           <div class="col-lg-4 col-md-6">
                             <select name="client" class="form-control">
                               {% for user in users %}
@@ -61,7 +61,7 @@
                               {% endfor %}
                             </select>
                             <div class="invalid-feedback">
-                              Please enter a title
+                              Please select a home owner
                             </div>
                           </div>
                         </div>
@@ -79,7 +79,7 @@
                               {% endfor %}
                             </select>
                             <div class="invalid-feedback">
-                              Please enter a title
+                              Please select a property.
                             </div>
                           </div>
                         </div>
