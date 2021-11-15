@@ -326,13 +326,20 @@ def assignProp(request):
     users = User.objects.filter(user_role="H").exclude(is_superuser=True).order_by('-id')
     properties = HouseInfo.objects.all().order_by('-title')
     counter_value = counter(properties)
+    houses = []
+
+    for property in properties:
+        if property.quantity > counter_value.get(property):
+            houses.append(property.title)
 
     context = {
         'page': "Assign Property",
         'users': users,
-        'properties': properties,
-        'counter': counter_value
+        'houses': houses
+        # 'properties': properties,
+        # 'counter': counter_value
     }
+
     if (not users) or (not properties):
         messages.error(request, 'No user/property added at the moment. Go back and add a user/property')
     elif request.method == "POST":
@@ -341,9 +348,13 @@ def assignProp(request):
             user = User.objects.get(id=user1.id)
             
             client = request.POST.get("client")
-            client = User.objects.filter(email=client)[0]
-
             house = request.POST.get("house")
+            
+            if not house or not client:
+                messages.error(request, 'House/Client is empty')
+                return render(request, "user/assign-property.html", context)
+
+            client = User.objects.filter(email=client)[0]
             house = HouseInfo.objects.filter(title=house)[0]
 
             if UserHouse.objects.filter(user_id=client, home_id=house).exists():
@@ -360,13 +371,13 @@ def assignProp(request):
                     'success': 'House assigned successfully',
                     'page':'Assign Property',
                     'users': users,
-                    'properties': properties,
-                    'counter': counter_value
+                    'houses': houses
+                    # 'properties': properties,
+                    # 'counter': counter_value
                     }
                 render(request, "user/assign-property.html", context)
 
-        except Exception as e:
-            print(e)
+        except ObjectDoesNotExist:
             messages.error(request, 'Unauthorised access')
     return render(request, "user/assign-property.html", context)
 
