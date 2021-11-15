@@ -323,7 +323,7 @@ def logout(request):
 @confirm_staff
 def assignProp(request):
     user1 = request.user
-    users = User.objects.all().exclude(user_role="S").order_by('-id')
+    users = User.objects.filter(user_role="S").exclude(is_superuser=True).order_by('-id')
     properties = HouseInfo.objects.all().order_by('-title')
     counter_value = counter(properties)
 
