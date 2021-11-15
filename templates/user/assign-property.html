@@ -74,6 +74,8 @@
                               <!-- issue with the if statement -->
                               {% if property.quantity > count %}
                               <option value="{{property.title}}">{{property.title}}</option>
+                              {% else %}
+                                  <span class="small">No property added</span>
                               {% endif %}
                               {% endwith %}
                               {% endfor %}
