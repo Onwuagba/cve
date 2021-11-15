@@ -323,7 +323,7 @@ def logout(request):
 @confirm_staff
 def assignProp(request):
     user1 = request.user
-    users = User.objects.filter(user_role="S").exclude(is_superuser=True).order_by('-id')
+    users = User.objects.filter(user_role="H").exclude(is_superuser=True).order_by('-id')
     properties = HouseInfo.objects.all().order_by('-title')
     counter_value = counter(properties)
 
@@ -360,11 +360,13 @@ def assignProp(request):
                     'success': 'House assigned successfully',
                     'page':'Assign Property',
                     'users': users,
-                    'properties': properties
+                    'properties': properties,
+                    'counter': counter_value
                     }
                 render(request, "user/assign-property.html", context)
 
-        except ObjectDoesNotExist:
+        except Exception as e:
+            print(e)
             messages.error(request, 'Unauthorised access')
     return render(request, "user/assign-property.html", context)
 
