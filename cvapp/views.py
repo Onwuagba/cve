@@ -175,6 +175,7 @@ def addOwner(request):
                 return render(request, "user/add-home-owner.html", success_note)
         except ObjectDoesNotExist:
             messages.error(request, 'Unauthorised access')
+            return redirect("cvapp:login")
     context = {'page':'Add Owner'}
     return render(request, "user/add-home-owner.html", context)
 
