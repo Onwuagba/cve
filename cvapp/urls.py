@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import home, login, forgotPass, allProp, allOwner, addProp, addOwner, logout, userProp, payDetails, resetPass, userDoc, newPayment, allFeature, addFeature, allPUpdate, addPUpdate, addStaff, allStaff, assignProp
+from .views import home, login, forgotPass, allProp, allOwner, addProp, addOwner, logout, userProp, payDetails, resetPass, userDoc, newPayment, allFeature, addFeature, allPUpdate, addPUpdate, addStaff, allStaff, assignProp, propInfo
 
 app_name = 'cvapp'
 
@@ -24,6 +24,7 @@ urlpatterns = [
     path("features/", allFeature, name='allFeature'),
     path("project-update/", allPUpdate, name='allPUpdate'),
     path("add-update/", addPUpdate, name='addPUpdate'),
+    path("property-info/<int:id>/", propInfo, name='propInfo'),
 
     # user URLS
     path("properties/", userProp, name='userProp'),

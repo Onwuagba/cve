@@ -1,0 +1,179 @@
+{% extends 'user/base/base.html' %}
+
+{% block content %}
+{% load static %}
+{% load humanize %}
+{% load convert %}
+      <!-- Main Content -->
+      <div class="main-content">
+        <section class="section">
+          <div class="section-header">
+            <div class="section-header-back">
+              <a href="{{ request.META.HTTP_REFERER }}" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
+            </div>
+            <h1>Property details</h1>
+            <div class="section-header-breadcrumb">
+              <div class="breadcrumb-item active"><a href="{% url 'cvapp:home' %}">Dashboard</a></div>
+              <div class="breadcrumb-item active"><a href="{% url 'cvapp:aProp' %}">All Properties</a></div>
+              <div class="breadcrumb-item"> Property Info</div>
+            </div>
+          </div>
+
+          <div class="section-body">
+            <h2 class="section-title"></h2>
+            <p class="section-lead">View and edit the property information below
+            </p>
+
+            <div id="output-status"></div>
+            <hr>
+            {% if house %}
+            <div class="row">
+              <div class="col-md-5">
+                <div class="card card-warning">
+                  <div class="card-header">
+                    <h4>{{ house.title | capfirst }}</h4>
+                    <div class="card-header-action">
+                      <span title="Purchase price">&#8358;{{ house.cost | intcomma }}</span>
+                    </div>
+                  </div>
+                  <div class="card-body">
+                    <div class="chocolat-parent">
+                      <!-- <a href="{% static '/img/login-bg1.jpg' %}" title="Just an example"> -->
+                        <div data-crop-image="">
+                          <img alt="image" src="{% static '/img/login-bg1.jpg' %}" class="img-fluid">
+                        </div>
+                      <!-- </a> -->
+                    </div>
+                    <div class="mt-2 mb-2"><b>Quantity: </b>{{ house.quantity }}<div class="bullet"></div><div class="bullet"></div><b>Qty Assigned: </b>{{ assigned_count }}<div class="bullet"></div><div class="bullet"></div><b>Added By: </b>{{ house.created_by }}</div>
+                    <div class="mt-2 text-muted">
+                      <div class="progress mt-2 mb-1">
+                        <div class="progress-bar bg-cve" role="progressbar" data-width="{{ house.progress }}%" aria-valuenow="{{ house.progress }}" aria-valuemin="0" aria-valuemax="100">{{ house.progress }}%</div>
+                      </div>
+                    </div>
+                    <hr>
+                    <p>{{ house.desription }}</p>
+                  </div>
+                  <div class="card-footer bg-whitesmoke">
+                    <span class="card-link"><strong>Created on: </strong>{{ house.date_created | date }}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-7">
+                <form id="setting-form" action="{% url 'cvapp:addProp'%}" method="POST" novalidate="">
+                  {% csrf_token %}
+                  <div class="card" id="settings-card">
+                    <div class="card-header">
+                      <h4>Edit Property</h4>
+                    </div>
+                    <div class="card-body">
+                      <div class="form-group row align-items-center">
+                        <label for="site-title" class="form-control-label col-sm-3 text-md-right"> Title</label>
+                        <div class="col-sm-6 col-md-9">
+                          <input type="text" name="title" class="form-control" id="site-title" required value="{{ title }}">
+                          <div class="invalid-feedback">
+                            Please enter a title
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group row align-items-center">
+                        <label for="site-title" class="form-control-label col-sm-3 text-md-right"> Quantity</label>
+                        <div class="col-sm-6 col-md-9">
+                          <input type="number" name="quantity" class="form-control" required min="1"  oninput="this.value = 
+                            !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" value="{{ quantity }}">
+                          <div class="invalid-feedback">
+                            Please enter a valid number
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div class="form-group row align-items-center">
+                        <label for="site-title" class="form-control-label col-sm-3 text-md-right"> Progress</label>
+                        <div class="col-sm-6 col-md-9">
+                          <input type="number" name="progress" class="form-control" required="" min="0" max="100" oninput="this.value = 
+                            !!this.value && Math.abs(this.value) >= 0 &&Math.abs(this.value) <= 100 ? Math.abs(this.value) : null" value="{{ progress }}">
+                          <div class="invalid-feedback">
+                            Please enter a number
+                          </div>
+                          <small id="roleBlock" class="form-text text-muted">
+                            Please enter the construction progress
+                          </small>
+                        </div>
+                      </div>
+                      <div class="form-group row align-items-center">
+                        <label for="site-title" class="form-control-label col-sm-3 text-md-right"> Selling Price</label>
+                        <div class="col-sm-6 col-md-9">
+                          <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text">&#8358;</span>
+                            </div>
+                            <input type="num" name="cost" class="form-control" aria-label="Amount" oninput="this.value = 
+                            !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" value="{{ cost }}">
+                            <div class="input-group-append">
+                              <span class="input-group-text">.00</span>
+                            </div>
+                            <div class="invalid-feedback">
+                              Please enter a price range
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group row align-items-center">
+                        <label for="site-description" class="form-control-label col-sm-3 text-md-right">Description</label>
+                        <div class="col-sm-6 col-md-9">
+                          <textarea class="form-control" name="site_description" id="site-description"></textarea>
+                        </div>
+                      </div>
+                      <div class="form-group row align-items-center">
+                        <label class="form-control-label col-sm-3 text-md-right">Property Photo</label>
+                        <div class="col-sm-6 col-md-9">
+                          <div class="custom-file">
+                            <input type="file" name="site_logo" class="custom-file-input" id="site-logo">
+                            <label class="custom-file-label">Choose File</label>
+                          </div>
+                          <div class="form-text text-muted">The image must have a maximum size of 50kb</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card-footer bg-whitesmoke text-md-right">
+                      <button class="btn btn-primary" id="save-btn">Save Changes</button>
+                      <button class="btn btn-secondary" type="button">Reset</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="card">
+                  <div class="card-header">
+                    <h4>Assignees</h4>
+                  </div>
+                  <div class="card-body p-0">
+                    <div class="table-responsive">
+                      <table class="table table-striped">
+                        <tr>
+                          <th>Home Owner</th>
+                          <th>Date Assigned</th>
+                          <th>Added By</th>
+                          <th></th>
+                        </tr>
+                        {% for assigned in assigned_to %}
+                        <tr>
+                          <td><a href="#">{{ assigned.user_id}}</a></td>
+                          <td class="font-weight-600">{{ assigned.date_created|date}}</td>
+                          <td>{{ assigned.created_by}}</td><td><a href="#" class="btn btn-cve">Delete</a></td>
+                        </tr>
+                        {% endfor %}
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% endif %}
+  		    </div>
+      	</section>
+      </div>
+      {% endblock %}
+
+       

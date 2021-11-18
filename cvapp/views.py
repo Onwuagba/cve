@@ -324,16 +324,23 @@ def logout(request):
 @confirm_staff
 def assignProp(request):
     user1 = request.user
-    users = User.objects.all().exclude(user_role="S").order_by('-id')
+    users = User.objects.filter(user_role="H").exclude(is_superuser=True).order_by('-id')
     properties = HouseInfo.objects.all().order_by('-title')
     counter_value = counter(properties)
+    houses = []
+
+    for property in properties:
+        if property.quantity > counter_value.get(property):
+            houses.append(property.title)
 
     context = {
         'page': "Assign Property",
         'users': users,
-        'properties': properties,
-        'counter': counter_value
+        'houses': houses
+        # 'properties': properties,
+        # 'counter': counter_value
     }
+
     if (not users) or (not properties):
         messages.error(request, 'No user/property added at the moment. Go back and add a user/property')
     elif request.method == "POST":
@@ -342,9 +349,13 @@ def assignProp(request):
             user = User.objects.get(id=user1.id)
             
             client = request.POST.get("client")
-            client = User.objects.filter(email=client)[0]
-
             house = request.POST.get("house")
+            
+            if not house or not client:
+                messages.error(request, 'House/Client is empty')
+                return render(request, "user/assign-property.html", context)
+
+            client = User.objects.filter(email=client)[0]
             house = HouseInfo.objects.filter(title=house)[0]
 
             if UserHouse.objects.filter(user_id=client, home_id=house).exists():
@@ -361,7 +372,9 @@ def assignProp(request):
                     'success': 'House assigned successfully',
                     'page':'Assign Property',
                     'users': users,
-                    'properties': properties
+                    'houses': houses
+                    # 'properties': properties,
+                    # 'counter': counter_value
                     }
                 render(request, "user/assign-property.html", context)
 
@@ -410,3 +423,36 @@ def allPUpdate(request):
         'p_updates': page_obj,
     }
     return render(request, "user/all-project-update.html", context)
+
+@login_required
+@confirm_staff
+def propInfo(request, id):
+    # current_user = request.user
+    if request.method == 'POST':
+        prop_id = get_object_or_404(User, id=id)
+        context = {
+            'page': 'Property Info',
+        }
+        return render(request, "user/property-info.html", context)
+    else:
+        try:
+            house_info = HouseInfo.objects.get(house_id=id)
+            assigned_to = UserHouse.objects.filter(home_id=id)
+            context = {
+                'page': 'Property Info',
+                'house': house_info,
+                'assigned_to': assigned_to,
+                'assigned_count': assigned_to.count()
+            }
+            return render(request, "user/property-info.html", context)
+        except ObjectDoesNotExist:
+            messages.error(request, 'Suspicious activity detected')
+            return redirect("cvapp:logout")
+
+#Error Pages
+def error404(request, exception=None):
+    return render(request, "errors/errors-404.html", status=400)
+
+
+def error500(request, exception=None):
+    return render(request, "errors/errors-500.html", status=500)
