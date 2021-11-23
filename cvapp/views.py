@@ -240,13 +240,13 @@ def addProp(request):
             progress = request.POST.get('progress')
             cost = request.POST.get('cost')
             description = request.POST.get('description')
-            img = request.POST.get('image')
+            img = request.FILES['image']
             context = {
                 'title':title,
                 'quantity':quantity,
                 'progress':progress,
                 'cost':cost,
-                # 'img':img,
+                'img':img,
                 'page':'Add Property'
             }
             if HouseInfo.objects.filter(title=title).exists():
@@ -428,16 +428,49 @@ def allPUpdate(request):
 @confirm_staff
 def propInfo(request, id):
     # current_user = request.user
-    if request.method == 'POST':
-        prop_id = get_object_or_404(User, id=id)
-        context = {
-            'page': 'Property Info',
-        }
-        return render(request, "user/property-info.html", context)
-    else:
-        try:
-            house_info = HouseInfo.objects.get(house_id=id)
-            assigned_to = UserHouse.objects.filter(home_id=id)
+    try:
+        house_info = HouseInfo.objects.get(house_id=id)
+        assigned_to = UserHouse.objects.filter(home_id=id)
+        if request.method == 'POST':
+            title = request.POST.get('title')
+            quantity = request.POST.get('quantity')
+            progress = request.POST.get('progress')
+            cost = request.POST.get('cost')
+            description = request.POST.get('description')
+            img = request.FILES['prop_image']
+            context = {
+                'page':'Property Info',
+                'title':title,
+                'quantity':quantity,
+                'progress':progress,
+                'cost':cost,
+                'description': description,
+                'assigned_to': assigned_to,
+                'assigned_count': assigned_to.count()
+            }
+            #prevent user from changing title to an already existing property title
+            if HouseInfo.objects.filter(title=title).exclude(house_id=id).exists():
+                messages.info(request, 'Property title already exists')
+                return render(request, "user/property-info.html", context)
+            else:
+                new_house = HouseInfo.objects.get(house_id=id)
+                
+                new_house.title=title
+                new_house.progress=progress
+                new_house.quantity=quantity
+                new_house.cost=cost
+                new_house.desription=description
+                new_house.images=img
+                new_house.save()
+                context = {
+                    'success': 'House edited successfully',
+                    'page':'Property Info',
+                    'house': new_house,    
+                    'assigned_to': assigned_to,
+                    'assigned_count': assigned_to.count()
+                }
+                return render(request, "user/property-info.html", context)
+        else:
             context = {
                 'page': 'Property Info',
                 'house': house_info,
@@ -445,7 +478,7 @@ def propInfo(request, id):
                 'assigned_count': assigned_to.count()
             }
             return render(request, "user/property-info.html", context)
-        except ObjectDoesNotExist:
+    except ObjectDoesNotExist:
             messages.error(request, 'Suspicious activity detected')
             return redirect("cvapp:logout")
 

@@ -49,7 +49,7 @@
                       </div>
                     {% endif %}
 
-                    <form action="{% url 'cvapp:addProp'%}" method="POST" class="wizard-content mt-2 needs-validation" novalidate="">
+                    <form action="{% url 'cvapp:addProp'%}" method="POST" class="wizard-content mt-2 needs-validation" novalidate="" enctype="multipart/form-data">
                       {% csrf_token %}
                       <div class="wizard-pane">
                         <div class="form-group row align-items-center">
