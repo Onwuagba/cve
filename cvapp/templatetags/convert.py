@@ -10,3 +10,8 @@ def aMill(value):
 @register.filter
 def get_item(dictionary, key):
     return dictionary.get(key)
+
+@register.filter
+def split_decimal(value):
+    new_val = value.split('.')[1]
+    return new_val

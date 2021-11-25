@@ -103,7 +103,7 @@
                           <input type="number" name="progress" class="form-control" required="" min="0" max="100" oninput="this.value = 
                             !!this.value && Math.abs(this.value) >= 0 &&Math.abs(this.value) <= 100 ? Math.abs(this.value) : null" value="{%if progress %}{{ progress }}{% else %}{{ house.progress }}{% endif %}">
                           <div class="invalid-feedback">
-                            Please enter a number
+                            Please enter a valid number less than 100
                           </div>
                           <small id="roleBlock" class="form-text text-muted">
                             Please enter the construction progress
@@ -117,10 +117,10 @@
                             <div class="input-group-prepend">
                               <span class="input-group-text">&#8358;</span>
                             </div>
-                            <input type="num" name="cost" class="form-control" aria-label="Amount" oninput="this.value = 
-                            !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" value="{%if cost %}{{ cost }}{% else %}{{ house.cost }}{% endif %}">
+                            <input type="number" name="cost" class="form-control" min="0"  step="0.01" oninput="this.value = 
+                            !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" value="{%if cost %}{{ cost|floatformat:-2 }}{% else %}{{ house.cost|floatformat:-2 }}{% endif %}">
                             <div class="invalid-feedback">
-                              Please enter a price range
+                              Please enter a valid selling price in 2 decimal places
                             </div>
                           </div>
                         </div>
@@ -135,7 +135,7 @@
                         <label class="form-control-label col-sm-3 text-md-right">Property Photo</label>
                         <div class="col-sm-6 col-md-9">
                           <div class="custom-file">
-                            <input type="file" name="prop_image" class="custom-file-input" accept="image/*" >
+                            <input type="file" name="prop_image" class="custom-file-input" accept="image/*">
                             <label class="custom-file-label">Choose File</label>
                           </div>
                           <div class="form-text text-muted">The image must have a maximum size of 50kb</div>
@@ -169,6 +169,10 @@
                           <td><a href="#">{{ assigned.user_id}}</a></td>
                           <td class="font-weight-600">{{ assigned.date_created|date}}</td>
                           <td>{{ assigned.created_by}}</td><td><a href="#" class="btn btn-cve">Delete</a></td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                          <td colspan="3" class="text-center"><b> This property is yet to be assigned. Assign <a href="{% url 'cvapp:assignProp' %}"> property</a> now.</b></td>
                         </tr>
                         {% endfor %}
                       </table>

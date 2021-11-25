@@ -9,6 +9,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator
 from django.contrib.auth.hashers import check_password
 from cvapp.decorators import confirm_staff
+from decimal import Decimal 
 
 # Create your views here.
 
@@ -436,8 +437,18 @@ def propInfo(request, id):
             quantity = request.POST.get('quantity')
             progress = request.POST.get('progress')
             cost = request.POST.get('cost')
+            # check if cost is already a decimal
+            if float(cost)%1 == 0:
+                cost = cost + '.00'
+            else:
+                cost = cost 
+
             description = request.POST.get('description')
-            img = request.FILES['prop_image']
+            # check if image is empty
+            if request.FILES.get('prop_image') is None:
+                img = house_info.images
+            else:
+                img = request.FILES.get('prop_image')
             context = {
                 'page':'Property Info',
                 'title':title,
@@ -463,7 +474,7 @@ def propInfo(request, id):
                 new_house.images=img
                 new_house.save()
                 context = {
-                    'success': 'House edited successfully',
+                    'success': 'Property edited successfully',
                     'page':'Property Info',
                     'house': new_house,    
                     'assigned_to': assigned_to,
