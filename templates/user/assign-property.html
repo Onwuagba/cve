@@ -75,6 +75,14 @@
                             <select name="house" class="form-control">
                               {% for house in houses %}
                               <option value="{{house}}">{{house}}</option>
+                              <!--  {% for property in properties %}
+                              {% with count=counter|get_item:property %}
+                              {% if property.quantity > count %}
+                              <option value="{{property.title}}">{{property.title}}</option>
+                              {% else %}
+                                  <span class="small">No property added</span>
+                              {% endif %}
+                              {% endwith %} -->
                               {% endfor %}
                             </select>
                             <div class="invalid-feedback">
