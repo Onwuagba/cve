@@ -9,6 +9,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator
 from django.contrib.auth.hashers import check_password
 from cvapp.decorators import confirm_staff
+from decimal import Decimal 
 
 # Create your views here.
 
@@ -175,6 +176,7 @@ def addOwner(request):
                 return render(request, "user/add-home-owner.html", success_note)
         except ObjectDoesNotExist:
             messages.error(request, 'Unauthorised access')
+            return redirect("cvapp:login")
     context = {'page':'Add Owner'}
     return render(request, "user/add-home-owner.html", context)
 
@@ -239,13 +241,13 @@ def addProp(request):
             progress = request.POST.get('progress')
             cost = request.POST.get('cost')
             description = request.POST.get('description')
-            img = request.POST.get('image')
+            img = request.FILES['image']
             context = {
                 'title':title,
                 'quantity':quantity,
                 'progress':progress,
                 'cost':cost,
-                # 'img':img,
+                'img':img,
                 'page':'Add Property'
             }
             if HouseInfo.objects.filter(title=title).exists():
@@ -326,13 +328,20 @@ def assignProp(request):
     users = User.objects.filter(user_role="H").exclude(is_superuser=True).order_by('-id')
     properties = HouseInfo.objects.all().order_by('-title')
     counter_value = counter(properties)
+    houses = []
+
+    for property in properties:
+        if property.quantity > counter_value.get(property):
+            houses.append(property.title)
 
     context = {
         'page': "Assign Property",
         'users': users,
-        'properties': properties,
-        'counter': counter_value
+        'houses': houses
+        # 'properties': properties,
+        # 'counter': counter_value
     }
+
     if (not users) or (not properties):
         messages.error(request, 'No user/property added at the moment. Go back and add a user/property')
     elif request.method == "POST":
@@ -341,9 +350,13 @@ def assignProp(request):
             user = User.objects.get(id=user1.id)
             
             client = request.POST.get("client")
-            client = User.objects.filter(email=client)[0]
-
             house = request.POST.get("house")
+            
+            if not house or not client:
+                messages.error(request, 'House/Client is empty')
+                return render(request, "user/assign-property.html", context)
+
+            client = User.objects.filter(email=client)[0]
             house = HouseInfo.objects.filter(title=house)[0]
 
             if UserHouse.objects.filter(user_id=client, home_id=house).exists():
@@ -360,13 +373,13 @@ def assignProp(request):
                     'success': 'House assigned successfully',
                     'page':'Assign Property',
                     'users': users,
-                    'properties': properties,
-                    'counter': counter_value
+                    'houses': houses
+                    # 'properties': properties,
+                    # 'counter': counter_value
                     }
                 render(request, "user/assign-property.html", context)
 
-        except Exception as e:
-            print(e)
+        except ObjectDoesNotExist:
             messages.error(request, 'Unauthorised access')
     return render(request, "user/assign-property.html", context)
 
@@ -411,3 +424,79 @@ def allPUpdate(request):
         'p_updates': page_obj,
     }
     return render(request, "user/all-project-update.html", context)
+
+@login_required
+@confirm_staff
+def propInfo(request, id):
+    # current_user = request.user
+    try:
+        house_info = HouseInfo.objects.get(house_id=id)
+        assigned_to = UserHouse.objects.filter(home_id=id)
+        if request.method == 'POST':
+            title = request.POST.get('title')
+            quantity = request.POST.get('quantity')
+            progress = request.POST.get('progress')
+            cost = request.POST.get('cost')
+            # check if cost is already a decimal
+            if float(cost)%1 == 0:
+                cost = cost + '.00'
+            else:
+                cost = cost 
+
+            description = request.POST.get('description')
+            # check if image is empty
+            if request.FILES.get('prop_image') is None:
+                img = house_info.images
+            else:
+                img = request.FILES.get('prop_image')
+            context = {
+                'page':'Property Info',
+                'title':title,
+                'quantity':quantity,
+                'progress':progress,
+                'cost':cost,
+                'description': description,
+                'assigned_to': assigned_to,
+                'assigned_count': assigned_to.count()
+            }
+            #prevent user from changing title to an already existing property title
+            if HouseInfo.objects.filter(title=title).exclude(house_id=id).exists():
+                messages.info(request, 'Property title already exists')
+                return render(request, "user/property-info.html", context)
+            else:
+                new_house = HouseInfo.objects.get(house_id=id)
+                
+                new_house.title=title
+                new_house.progress=progress
+                new_house.quantity=quantity
+                new_house.cost=cost
+                new_house.desription=description
+                new_house.images=img
+                new_house.save()
+                context = {
+                    'success': 'Property edited successfully',
+                    'page':'Property Info',
+                    'house': new_house,    
+                    'assigned_to': assigned_to,
+                    'assigned_count': assigned_to.count()
+                }
+                return render(request, "user/property-info.html", context)
+        else:
+            context = {
+                'page': 'Property Info',
+                'house': house_info,
+                'assigned_to': assigned_to,
+                'assigned_count': assigned_to.count()
+            }
+            return render(request, "user/property-info.html", context)
+    except ObjectDoesNotExist:
+            messages.error(request, 'Suspicious activity detected')
+            return redirect("cvapp:logout")
+
+#Error Pages
+def error404(request, exception=None):
+    return render(request, "errors/errors-404.html", status=400)
+
+
+def error500(request, exception=None):
+    return render(request, "errors/errors-500.html", status=500)

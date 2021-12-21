@@ -47,6 +47,10 @@
                       <div class="alert alert-success text-center" role="alert">
                         {{ success }}
                       </div>
+                    {% elif not houses%}
+                    <div class="alert alert-warning text-center" role="alert">
+                      All properties have been assigned. Create a <a href="{% url 'cvapp:addProp'%}"><strong style="color: #000000">new property.</strong></a>
+                    </div>
                     {% endif %}
 
                     <form action="{% url 'cvapp:assignProp'%}" method="POST" class="wizard-content mt-2 needs-validation" novalidate="">
@@ -69,15 +73,16 @@
                           <label class="col-md-4 text-md-right text-left" for="house">House</label>
                           <div class="col-lg-4 col-md-6">
                             <select name="house" class="form-control">
-                              {% for property in properties %}
+                              {% for house in houses %}
+                              <option value="{{house}}">{{house}}</option>
+                              <!--  {% for property in properties %}
                               {% with count=counter|get_item:property %}
-                              <!-- issue with the if statement -->
                               {% if property.quantity > count %}
                               <option value="{{property.title}}">{{property.title}}</option>
                               {% else %}
                                   <span class="small">No property added</span>
                               {% endif %}
-                              {% endwith %}
+                              {% endwith %} -->
                               {% endfor %}
                             </select>
                             <div class="invalid-feedback">

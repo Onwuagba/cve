@@ -196,7 +196,7 @@
                 <a href="{% url 'cvapp:home' %}" class="nav-link"><i class="fas fa-laptop"></i><span>Dashboard</span></a>
               </li>
               <li class="menu-header">The Estate</li>
-              <li class="nav-item {% if page == 'All Properties' %}active{% endif %}">
+              <li class="nav-item {% if page == 'All Properties' or page == 'Property Info' %}active{% endif %}">
                 <a href="{% url 'cvapp:aProp'%}" class="nav-link"><i class="fas fa-city"></i> <span>All Properties</span></a>
               </li>
               <li class="nav-item {% if page == 'Add Property' %}active{% endif %}">
