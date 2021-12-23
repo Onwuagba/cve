@@ -12,34 +12,37 @@
           <div class="row">
             <div class="col-lg-4 col-md-6 col-sm-6 col-12">
               <div class="card card-statistic-1">
+                <a href="{% url 'cvapp:aProp' %}">
                 <div class="card-icon bg-cve">
                   <i class="fas fa-home"></i>
                 </div>
+              </a>
                 <div class="card-wrap">
                   <div class="card-header">
                     <h4>All Properties</h4>
                   </div>
                   <div class="card-body">
-                    10
+                    {{no_property}}
                   </div>
                 </div>
+              
               </div>
             </div>
             <div class="col-lg-4 col-md-6 col-sm-6 col-12">
               <div class="card card-statistic-1">
+                <a href="{% url 'cvapp:aOwner' %}">
                 <div class="card-icon bg-cve">
                   <i class="fas fa-user"></i>
                 </div>
-                <a href="#" class="dash_head">
+                </a>
                   <div class="card-wrap">
                     <div class="card-header">
                       <h4>Total Clients</h4>
                     </div>
                     <div class="card-body">
-                      42
+                      {{no_client}}
                     </div>
                   </div>
-                </a>
               </div>
             </div>
             <!-- <div class="col-lg-3 col-md-6 col-sm-6 col-12">
