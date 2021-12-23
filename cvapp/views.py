@@ -15,18 +15,40 @@ from decimal import Decimal
 
 @login_required
 def home(request):
-    context = {
+    user = request.user
+
+    total_properties = len(HouseInfo.objects.all())
+    total_clients = len(User.objects.filter(user_role='H'))
+    
+    properties = UserHouse.objects.filter(user_id=user.id)
+    no_user_property = len(properties)
+    total_cost = sum([ property.home_id.cost for property in properties ])
+
+
+    c_context = {
         'page': 'Dashboard',
+        'no_user_property': no_user_property,
+        'purchase_value': total_cost
+    }
+
+    s_context = {
+        'page': 'Dashboard',
+        'no_property': total_properties,
+        'no_client': total_clients,
     }
     if request.user.user_role == 'S':
-        return render(request, "user/dashboard.html", context)
+        return render(request, "user/dashboard.html", s_context)
     else:
-        return render(request, "cve_user/user_dash.html", context)
+        return render(request, "cve_user/user_dash.html", c_context)
 
 @login_required
 def userProp(request):
+    user = request.user
+    properties = UserHouse.objects.filter(user_id=user.id)
+
     context = {
         'page': 'Properties',
+        'properties': properties,
     }
     return render(request, "cve_user/user_properties.html", context)
 

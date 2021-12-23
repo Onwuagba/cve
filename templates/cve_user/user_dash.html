@@ -2,6 +2,7 @@
 
 {% block content %}
 {% load static %}
+{% load convert %}
 
 <style>
   .list-group-item:first-child{
@@ -90,15 +91,17 @@
           <div class="row">
             <div class="col-lg-4 col-md-6 col-sm-6 col-12">
               <div class="card card-statistic-1">
+                <a href="{% url 'cvapp:userProp' %}">
                 <div class="card-icon bg-cve">
                   <i class="fas fa-home"></i>
                 </div>
+                </a>
                 <div class="card-wrap">
                   <div class="card-header">
                     <h4>My Properties</h4>
                   </div>
                   <div class="card-body">
-                    1
+                    {{no_user_property}}
                   </div>
                 </div>
               </div>
@@ -114,7 +117,7 @@
                       <h4>Purchase Value</h4>
                     </div>
                     <div class="card-body">
-                      &#8358;44.9M
+                      &#8358;{{purchase_value | aMill }}M
                     </div>
                   </div>
                 <!-- </a> -->
